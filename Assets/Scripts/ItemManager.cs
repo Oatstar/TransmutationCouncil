@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using TMPro;
 
 public class ItemManager : MonoBehaviour
 {
@@ -24,6 +26,9 @@ public class ItemManager : MonoBehaviour
     public bool[] tier2Unlocks = new bool[10];
     public bool[] tier3Unlocks = new bool[3];
 
+    //public int[] tier2Knowledge = new int[10]; //-1 = none, 0 = item1, 1 = item2, 2 = bothItems
+    //public int[] tier3Knowledge  = new int[3]; //-1 = none, 0 = item1, 1 = item2, 2 = bothItems
+
     public List<Item> tier1Items = new List<Item> { };
     public List<Item> tier2Items = new List<Item> { };
     public List<Item> tier3Items = new List<Item> { };
@@ -32,6 +37,8 @@ public class ItemManager : MonoBehaviour
     public GameObject itemSpritePrefab;
 
     Color fullColor = new Color(1, 1f, 1f, 1.0f);
+    Color blackColor = new Color(0, 0f, 0f, 0.75f);
+
     Color emptyColor = new Color(1, 1f, 1f, 0.35f);
     Color noColor = new Color(1, 1f, 1f, 0.0f);
 
@@ -83,7 +90,8 @@ public class ItemManager : MonoBehaviour
             spawnedItem.name = "Item";
             GameObject spawnedText = Instantiate(itemTextCountPrefab, transform.position, Quaternion.identity, itemSlotsTier1[i].transform);
             spawnedText.transform.localPosition = new Vector2(0, 0);
-            
+            spawnedText.name = "ItemCount";
+
             spawnedItem.GetComponent<Image>().sprite = tier1Images[i];
             spawnedItem.GetComponent<ItemController>().SetCurrentItem(tier1Items[i]);
         }
@@ -95,6 +103,7 @@ public class ItemManager : MonoBehaviour
             spawnedItem.name = "Item";
             GameObject spawnedText = Instantiate(itemTextCountPrefab, transform.position, Quaternion.identity, itemSlotsTier2[i].transform);
             spawnedText.transform.localPosition = new Vector2(0, 0);
+            spawnedText.name = "ItemCount";
 
             spawnedItem.GetComponent<Image>().sprite = tier2Images[i];
             spawnedItem.GetComponent<ItemController>().SetCurrentItem(tier2Items[i]);
@@ -107,6 +116,7 @@ public class ItemManager : MonoBehaviour
             spawnedItem.name = "Item";
             GameObject spawnedText = Instantiate(itemTextCountPrefab, transform.position, Quaternion.identity, itemSlotsTier3[i].transform);
             spawnedText.transform.localPosition = new Vector2(0, 0);
+            spawnedText.name = "ItemCount";
 
             spawnedItem.GetComponent<Image>().sprite = tier3Images[i];
             spawnedItem.GetComponent<ItemController>().SetCurrentItem(tier3Items[i]);
@@ -313,30 +323,38 @@ public class ItemManager : MonoBehaviour
     {
         if(tier == 1)
         {
+            Debug.Log("child: " + itemSlotsTier1[slotId].transform.GetChild(0).name);
+            Debug.Log("child: " + itemSlotsTier1[slotId].transform.GetChild(1).name);
+            TMP_Text countText = itemSlotsTier1[slotId].transform.Find("ItemCount").GetComponent<TMP_Text>();
+            countText.text = tier1ItemCounts[slotId].ToString();
             Image slotImage = itemSlotsTier1[slotId].transform.Find("Item").GetComponent<Image>();
             //Debug.Log("tier " + tier + "  slot: " + slotId + " - count: "+ tier1ItemCounts[slotId]);
             if (tier1ItemCounts[slotId] <= 0)
-                slotImage.color = emptyColor;
+                slotImage.color = blackColor;
             else
                 slotImage.color = fullColor;
         }
         else if (tier == 2)
         {
+            TMP_Text countText = itemSlotsTier2[slotId].transform.Find("ItemCount").GetComponent<TMP_Text>();
+            countText.text = tier2ItemCounts[slotId].ToString();
             Image slotImage = itemSlotsTier2[slotId].transform.Find("Item").GetComponent<Image>();
 
             //Debug.Log("tier " + tier + "  slot: " + slotId + " - count: " + tier2ItemCounts[slotId]);
             if (tier2ItemCounts[slotId] <= 0)
-                slotImage.color = emptyColor;
+                slotImage.color = blackColor;
             else
                 slotImage.color = fullColor;
         }
         else if (tier == 3)
         {
+            TMP_Text countText = itemSlotsTier3[slotId].transform.Find("ItemCount").GetComponent<TMP_Text>();
+            countText.text = tier3ItemCounts[slotId].ToString();
             Image slotImage = itemSlotsTier3[slotId].transform.Find("Item").GetComponent<Image>();
 
             //Debug.Log("tier " + tier + "  slot: " + slotId + " - count: " + tier3ItemCounts[slotId]);
             if (tier3ItemCounts[slotId] <= 0)
-                slotImage.color = emptyColor;
+                slotImage.color = blackColor;
             else
                 slotImage.color = fullColor;
         }
@@ -371,9 +389,12 @@ public class ItemManager : MonoBehaviour
 
     }
 
-    public void AddItemToCount(int tier, int id)
+    public void AddItemToCount(int tier, int id, Item newItem)
     {
-        if(tier == 2)
+        newItem.item1Knowledge = true;
+        newItem.item2Knowledge = true;
+
+        if (tier == 2)
         {
             tier2ItemCounts[id] = tier2ItemCounts[id] + 1;
             ItemManager.instance.RefreshItemSlot(2, id);
@@ -383,10 +404,59 @@ public class ItemManager : MonoBehaviour
         {
             tier3ItemCounts[id] = tier3ItemCounts[id] + 1;
             ItemManager.instance.RefreshItemSlot(3, id);
-
         }
     }
 
+    public Item GainRandomKnowledge(int tier)
+    {
+        List<Item> itemsToSearch;
+
+        if (tier == 2)
+        {
+            itemsToSearch = tier2Items;
+        }
+        else if (tier == 3)
+        {
+            itemsToSearch = tier3Items;
+        }
+        else
+        {
+            return null; // Handle other tiers if necessary
+        }
+
+        // Filter items where either item1Knowledge or item2Knowledge is false
+        var filteredItems = itemsToSearch.Where(item => !item.item1Knowledge || !item.item2Knowledge).ToList();
+
+        if (filteredItems.Count == 0)
+        {
+            // No items found, return null or handle as needed
+            return null;
+        }
+
+        // Randomly select an item from the filtered list
+        var random = new System.Random();
+        int index = random.Next(filteredItems.Count);
+        var selectedItem = filteredItems[index];
+        int selectedKnowledge = -1;
+
+        // Update item1Knowledge or item2Knowledge to true
+        if (!selectedItem.item1Knowledge)
+        {
+            Debug.Log("Set knowledge to true for: " + selectedItem.itemName + "- need 1");
+            selectedItem.item1Knowledge = true;
+            selectedKnowledge = 0;
+        }
+        else if (!selectedItem.item2Knowledge)
+        {
+            Debug.Log("Set knowledge to true for: " + selectedItem.itemName + "- need 2");
+            selectedItem.item2Knowledge = true;
+            selectedKnowledge = 1;
+        }
+
+        // Return the modified item
+        LogTextManager.instance.ReceiveKnowledgeData(selectedItem, selectedKnowledge);
+        return selectedItem;
+    }
 
 }
 
@@ -397,6 +467,9 @@ public class Item
     public string itemName;
     public List<int> neededItems = new List<int> {};
     public List<Item> neededItemsItem = new List<Item> { };
+
+    public bool item1Knowledge = false;
+    public bool item2Knowledge = false;
 
     public int itemTier;
     public string infoText = "Placeholder text for flavourful story and information about this item about what does it do and so on. Doesn't really give anything insightful gameplay wise.";

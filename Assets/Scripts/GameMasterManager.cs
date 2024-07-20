@@ -5,11 +5,11 @@ using UnityEngine;
 public class GameMasterManager : MonoBehaviour
 {
     public float timer = 0;
-    float hintInterval = 10f;
+    float hintInterval = 30f;
 
     private void Start()
     {
-        TriggerRandomHint();
+        Invoke("TriggerRandomHint",15f);
     }
 
     private void Update()
@@ -27,8 +27,9 @@ public class GameMasterManager : MonoBehaviour
         int randomVal = UnityEngine.Random.Range(0, 100);
 
         if (randomVal < 5)
-            LogTextManager.instance.ShowTierHint(3);
+            LogTextManager.instance.TriggerKnowledgeHint(3);
         else
-            LogTextManager.instance.ShowTierHint(2);
+            LogTextManager.instance.TriggerKnowledgeHint(2);
     }
+
 }

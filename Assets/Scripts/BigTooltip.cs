@@ -94,35 +94,52 @@ public class BigTooltip : MonoBehaviour
             neededItem1 = tooltipItem.neededItemsItem[0];
             neededItem2 = tooltipItem.neededItemsItem[1];
 
-            int currentTier = 0;
+            //int currentTier = 0;
 
-            if (tooltipItem.itemTier == 2)
+            if (tooltipItem.itemTier != 1)
             {
-                if (ItemManager.instance.tier2Unlocks[tooltipItem.itemId])
-                    currentTier = 2;
-            }
-            else if (tooltipItem.itemTier == 3)
-            {
-                if (ItemManager.instance.tier3Unlocks[tooltipItem.itemId])
-                    currentTier = 3;
+                if (tooltipItem.item1Knowledge)
+                {
+                    neededItem1NameText.text = neededItem1.itemName;
+                    neededItem1Image.sprite = neededItem1.itemSprite;
+                    neededItem1Image.color = new Color(1, 1, 1, 1);
+                }
+                else
+                {
+                    neededItem1NameText.text = "?";
+                    neededItem1Image.sprite = neededItem1.itemSprite;
+                    neededItem1Image.color = new Color(1, 1, 1, 0);
+                }
+                if (tooltipItem.item2Knowledge)
+                {
+                    neededItem2NameText.text = neededItem2.itemName;
+                    neededItem2Image.sprite = neededItem2.itemSprite;
+                    neededItem2Image.color = new Color(1, 1, 1, 1);
+                }
+                else
+                {
+                    neededItem2NameText.text = "?";
+                    neededItem2Image.sprite = neededItem2.itemSprite;
+                    neededItem2Image.color = new Color(1, 1, 1, 0);
+                }
             }
 
-            if (currentTier != 0)
-            {
-                neededItem1NameText.text = neededItem1.itemName;
-                neededItem2NameText.text = neededItem2.itemName;
+            //if (currentTier != 0)
+            //{
+            //    neededItem1NameText.text = neededItem1.itemName;
+            //    neededItem2NameText.text = neededItem2.itemName;
 
-                neededItem1Image.sprite = neededItem1.itemSprite;
-                neededItem2Image.sprite = neededItem2.itemSprite;
-            }
-            else
-            {
-                neededItem1NameText.text = "?";
-                neededItem2NameText.text = "?";
-            }
+            //    neededItem1Image.sprite = neededItem1.itemSprite;
+            //    neededItem2Image.sprite = neededItem2.itemSprite;
+            //}
+            //else
+            //{
+            //    neededItem1NameText.text = "?";
+            //    neededItem2NameText.text = "?";
+            //}
 
-            neededItem1Image.color = new Color(1, 1, 1, 1);
-            neededItem2Image.color = new Color(1, 1, 1, 1);
+            //neededItem1Image.color = new Color(1, 1, 1, 1);
+            //neededItem2Image.color = new Color(1, 1, 1, 1);
         }
         else
         {

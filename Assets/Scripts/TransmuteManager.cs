@@ -41,7 +41,7 @@ public class TransmuteManager : MonoBehaviour
                     Debug.Log(successText);
                     LogTextManager.instance.AddSpecificHintToLog(successText);
 
-                    ItemManager.instance.AddItemToCount(2, tier2Item.itemId);
+                    ItemManager.instance.AddItemToCount(2, tier2Item.itemId, tier2Item);
 
                     return tier2Item;
                 }
@@ -55,9 +55,10 @@ public class TransmuteManager : MonoBehaviour
                 {
                     string succesText = $"{item1.itemName} and {item2.itemName} create {tier3Item.itemName}.";
                     Debug.Log(succesText);
+
                     LogTextManager.instance.AddSpecificHintToLog(succesText);
 
-                    ItemManager.instance.AddItemToCount(3, tier3Item.itemId);
+                    ItemManager.instance.AddItemToCount(3, tier3Item.itemId, tier3Item);
 
                     return tier3Item;
                 }

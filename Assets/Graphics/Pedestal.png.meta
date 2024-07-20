@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9c6ad68efd3d83c439fd9dc7029079e4
+guid: 5f7a97cd326b86b4d93de9f63b86d866
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1701645146151734043
-    second: ItemSlotSheet_0
+      213: 1258725773840671922
+    second: Pedestal_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,22 +126,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ItemSlotSheet_0
+      name: Pedestal_0
       rect:
         serializedVersion: 2
-        x: 469
-        y: 114
-        width: 51
-        height: 52
+        x: 2
+        y: 1
+        width: 53
+        height: 50
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 4, y: 4, z: 4, w: 9}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b1b4426ae357d9710800000000000000
-      internalID: 1701645146151734043
+      spriteID: 2b4e66b1c64e77110800000000000000
+      internalID: 1258725773840671922
       vertices: []
       indices: 
       edges: []
@@ -149,15 +149,15 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ItemSlotSheet_0: 1701645146151734043
+      Pedestal_0: 1258725773840671922
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

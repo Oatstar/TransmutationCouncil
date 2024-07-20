@@ -39,6 +39,16 @@ public class LogTextManager : MonoBehaviour
         }
     }
 
+    public void TriggerKnowledgeHint(int tierLevel)
+    {
+        ItemManager.instance.GainRandomKnowledge(tierLevel);
+    }
+
+    public void ReceiveKnowledgeData(Item knowledgeItem, int selectedKnowledge)
+    {
+        AddSpecificHintToLog("Gained knowledge: " + knowledgeItem.itemName + " needs " + knowledgeItem.neededItemsItem[selectedKnowledge].itemName);
+    }
+
     public void ShowGameplayHint(int listedHint = -1)
     {
         if (listedHint == -1)
