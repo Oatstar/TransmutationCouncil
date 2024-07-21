@@ -616,7 +616,28 @@ public class ItemManager : MonoBehaviour
 
         return biomeLoot;
     }
+    
 
+
+    public string GetBuffText(Item item)
+    {
+        string biomeName = CombatManager.instance.GetBiomeName(item.buffBiome);
+        string text = ""; // +10% extra loot chance in Infernal Wastes - +5% chance for knowledge in Infernal Wastes - -2 seconds scavenger interval
+
+        if (item.buffType == 0) //dropchance
+        {
+            text = "+" + item.buffValue + "% extra loot chance in " + biomeName;
+        }
+        else if (item.buffType == 1) //knowledgechanc
+        {
+            text = "+" + item.buffValue + "% knowledge chance in " + biomeName;
+        }
+        else if (item.buffType == 2)
+        {
+            text = "-" + item.buffValue + " attack interval in " + biomeName;
+        }
+        return text;
+    }
 }
 
 

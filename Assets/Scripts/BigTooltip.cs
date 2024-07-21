@@ -18,6 +18,7 @@ public class BigTooltip : MonoBehaviour
     public TMP_Text neededItem1NameText;
     public TMP_Text neededItem2NameText;
     public TMP_Text targetBiomeText;
+    public TMP_Text buffInformation;
 
 
     //[SerializeField] private Camera uiCamera;
@@ -94,8 +95,6 @@ public class BigTooltip : MonoBehaviour
             neededItem1 = tooltipItem.neededItemsItem[0];
             neededItem2 = tooltipItem.neededItemsItem[1];
 
-            //int currentTier = 0;
-
             if (tooltipItem.itemTier != 1)
             {
                 if (tooltipItem.item1Knowledge)
@@ -122,6 +121,16 @@ public class BigTooltip : MonoBehaviour
                     neededItem2Image.sprite = neededItem2.itemSprite;
                     neededItem2Image.color = new Color(1, 1, 1, 0);
                 }
+            }
+
+            if(tooltipItem.itemTier == 1 ||tooltipItem.itemTier == 2)
+            {
+                buffInformation.text = ItemManager.instance.GetBuffText(tooltipItem);
+            }
+
+            if(tooltipItem.itemTier == 3)
+            {
+                buffInformation.text = "Equip all 3 of the tier 3 items to escape the Shadow Council!";
             }
 
             //if (currentTier != 0)

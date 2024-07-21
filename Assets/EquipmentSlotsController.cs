@@ -16,8 +16,6 @@ public class EquipmentSlotsController : MonoBehaviour
         RefreshEquipmentSlots();
     }
 
-    
-
     public void RemoveItem()
     {
         itemEqImage.color = new Color(1, 1, 1, 0);

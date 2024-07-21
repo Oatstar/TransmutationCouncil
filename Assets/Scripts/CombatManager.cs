@@ -6,6 +6,9 @@ using TMPro;
 
 public class CombatManager : MonoBehaviour
 {
+    public int enemyHealth = 20;
+    public int enemyMaxHealth = 20;
+    public int attackDamage = 3;
     public List<Item> currentEquipments = new List<Item> { };
     public int currentBiome = 0;
     public int attackIntervalDefault = 10;
@@ -25,6 +28,15 @@ public class CombatManager : MonoBehaviour
     public TMP_Text itemDropChanceText;
     public TMP_Text knowledgeDropChanceText;
 
+    public Slider attackTimerSlider;
+    public Slider enemyHealthSlider;
+
+    bool attacking = false;
+
+    public Sprite[] biomeSprites;
+    public Image biomeImage;
+
+
     public static CombatManager instance;
 
     private void Awake()
@@ -35,6 +47,9 @@ public class CombatManager : MonoBehaviour
     private void Start()
     {
         ChangeBiome(0);
+        enemyHealth = 0;
+        enemyHealthSlider.value = 0;
+
         RefreshTextValues();
     }
 
@@ -73,6 +88,7 @@ public class CombatManager : MonoBehaviour
     public void ChangeBiome(int newBiome)
     {
         currentBiome = newBiome;
+        biomeImage.sprite = biomeSprites[currentBiome];
         biomeText.text = GetBiomeName(currentBiome);
     }
 
@@ -83,9 +99,26 @@ public class CombatManager : MonoBehaviour
         knowledgeDropChanceText.text = "Knowledge chance: " + knowledgeDropChance.ToString() + "%";
     }
 
+    void StartAttacking()
+    {
+        SetEnemy();
+        attacking = true;
+    }
+
+    void SetEnemy()
+    {
+        enemyHealth = enemyMaxHealth;
+        enemyHealthSlider.value = Tools.instance.NormalizeToSlider(enemyHealth, enemyMaxHealth);
+    }
+
     private void Update()
     {
+        if (!attacking)
+            return;
+
         attackTimer += Time.deltaTime;
+        attackTimerSlider.value = Tools.instance.NormalizeToSlider(attackTimer, attackInterval);
+
         if(attackTimer >= attackInterval)
         {
             attackTimer = 0;
@@ -95,7 +128,22 @@ public class CombatManager : MonoBehaviour
 
     void DoAttack()
     {
+        enemyHealth -= attackDamage;
+        if(enemyHealth <= 0)
+        {
+            EnemyDestroyed();
+        }
+    }
+
+    void EnemyDestroyed()
+    {
         GainLoot();
+        FightNewEnemy();
+    }
+
+    void FightNewEnemy()
+    {
+        SetEnemy();
     }
 
     void GainLoot()
@@ -121,8 +169,6 @@ public class CombatManager : MonoBehaviour
             LogTextManager.instance.AddSpecificHintToLog("LOOT: "+itemLoot[i].itemName);
             ItemManager.instance.AddItemToCount(itemLoot[0]);
         }
-
-
     }
 
     public bool CanModifyCombat()
