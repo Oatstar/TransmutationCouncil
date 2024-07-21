@@ -13,12 +13,25 @@ public class CircleSlotController : MonoBehaviour
         currentItem = droppedItem;
         itemCircleImage.sprite = ItemManager.instance.GetItemSprite(currentItem);
         itemCircleImage.color = new Color(1, 1, 1,1);
-        itemCircleImage.gameObject.SetActive(true);
+        //itemCircleImage.gameObject.SetActive(true);
     }
 
     public void RemoveItem()
     {
-        itemCircleImage.gameObject.SetActive(false);
+        if (TransmuteManager.instance.GetTransmutationOnGoing())
+            return;
+
+        //itemCircleImage.gameObject.SetActive(false);
+        itemCircleImage.color = new Color(1, 1, 1, 0);
+
+        currentItem = null;
+        itemCircleImage.sprite = null;
+
+        GetComponent<ItemSlot>().ClearSlot();
+    }
+
+    public void ExpendItem()
+    {
         itemCircleImage.color = new Color(1, 1, 1, 0);
 
         currentItem = null;

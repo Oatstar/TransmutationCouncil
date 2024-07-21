@@ -9,8 +9,10 @@ public class DragManager : MonoBehaviour
     public GameObject dragContainer;
     public Image dragIcon;
     public Item currentlyDragging;
+    public DragObject currentDragObject;
 
     RectTransform dragBoxRectTransform;
+    public bool droppedIntoSlot = false;
 
     public static DragManager instance;
 
@@ -20,9 +22,13 @@ public class DragManager : MonoBehaviour
         dragBoxRectTransform = dragContainer.GetComponent<RectTransform>();
     }
 
-    public void SetDragData(Item dragItem)
+    public void SetDragData(Item dragItem, GameObject parentObject, DragObject currentdrag)
     {
+        
+
+        DroppedInSlot(false);
         // Set values
+        currentDragObject = currentdrag;
         currentlyDragging = dragItem;
         dragIcon.sprite = ItemManager.instance.GetItemSprite(dragItem);
         
@@ -30,15 +36,41 @@ public class DragManager : MonoBehaviour
         Vector2 mousePosition = Input.mousePosition;
         dragContainer.transform.position = mousePosition;
         
-                //Enable
+        //Enable
         dragContainer.SetActive(true);
+
+        if (parentObject.tag == "InventorySlot")
+        {
+            ItemManager.instance.RemoveItemFromCount(dragItem);
+        }
+        else if (parentObject.tag == "CirclePanel")
+        {
+            parentObject.GetComponent<CircleSlotController>().RemoveItem();
+
+        }
+    }
+
+    public void ReturnObjectToInventory(Item item)
+    {
+        ItemManager.instance.AddItemToCount(item);
     }
 
     public void CloseDragWindow()
     {
         dragContainer.SetActive(false);
         currentlyDragging = null;
+        currentDragObject = null;
 
+    }
+
+    public void SetCurrentObjectInSlot()
+    {
+
+    }
+
+    private void Update()
+    {
+        //RefreshPosition();
     }
 
     public void RefreshPosition()
@@ -48,14 +80,9 @@ public class DragManager : MonoBehaviour
         dragBoxRectTransform.anchoredPosition = mousePosition;
     }
 
-    private void Update()
+    public void DroppedInSlot(bool state)
     {
-        //if(dragContainer.activeSelf)
-        //{
-        //    Vector2 mousePosition = Input.mousePosition;
-
-        //    dragContainer.transform.position = mousePosition;
-        //}
+        droppedIntoSlot = state;
     }
 
 

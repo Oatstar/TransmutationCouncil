@@ -56,6 +56,8 @@ public class ItemManager : MonoBehaviour
     void SetupValues()
     {
         CreateItems();
+        CreateItemBuffs();
+        SetLootableBiomes();
         CacheItemSlots();
         CreateItemSlotData();
 
@@ -183,6 +185,67 @@ public class ItemManager : MonoBehaviour
             tier3Items[i].itemSprite = tier3Images[i];
         }
 
+    }
+
+    void CreateItemBuffs()
+    {
+        tier1Items[0].SetBuffValues(0,10,0);
+        tier1Items[1].SetBuffValues(0, 10, 0);
+        tier1Items[2].SetBuffValues(0, 10, 0);
+        tier1Items[3].SetBuffValues(0, 10, 0);
+        tier1Items[4].SetBuffValues(0, 15, 1);
+        tier1Items[5].SetBuffValues(0, 15, 1);
+        tier1Items[6].SetBuffValues(1, 10, 3);
+        tier1Items[7].SetBuffValues(2, 2, 2);
+        tier1Items[8].SetBuffValues(2, 1, 2);
+        tier1Items[9].SetBuffValues(0, 15, 1);
+        tier1Items[10].SetBuffValues(1, 10, 3);
+        tier1Items[11].SetBuffValues(2, 2, 3);
+        tier1Items[12].SetBuffValues(2, 2, 2);
+        tier1Items[13].SetBuffValues(1, 10, 3);
+        tier1Items[14].SetBuffValues(0, 15, 0);
+        tier1Items[15].SetBuffValues(2, 1, 1);
+        tier1Items[16].SetBuffValues(2, 1, 1);
+        tier1Items[17].SetBuffValues(2, 2, 2);
+        tier1Items[18].SetBuffValues(2, 1, 2);
+        tier1Items[19].SetBuffValues(1, 10, 3);
+
+        tier2Items[0].SetBuffValues(0, 20, 0);
+        tier2Items[1].SetBuffValues(0, 20, 1);
+        tier2Items[2].SetBuffValues(0, 20, 2);
+        tier2Items[3].SetBuffValues(0, 20, 3);
+        tier2Items[4].SetBuffValues(2, 3, 0);
+        tier2Items[5].SetBuffValues(2, 3, 1);
+        tier2Items[6].SetBuffValues(2, 3, 2);
+        tier2Items[7].SetBuffValues(2, 3, 3);
+        tier2Items[8].SetBuffValues(0, 25, 0);
+        tier2Items[9].SetBuffValues(0, 25, 1);
+
+
+    }
+
+    void SetLootableBiomes()
+    {
+        tier1Items[0].lootableBiome = 0;
+        tier1Items[1].lootableBiome = 2;
+        tier1Items[2].lootableBiome = 1;
+        tier1Items[3].lootableBiome = 3;
+        tier1Items[4].lootableBiome = 0;
+        tier1Items[5].lootableBiome = 1;
+        tier1Items[6].lootableBiome = 0;
+        tier1Items[7].lootableBiome = 2;
+        tier1Items[8].lootableBiome = 0;
+        tier1Items[9].lootableBiome = 2;
+        tier1Items[10].lootableBiome = 3;
+        tier1Items[11].lootableBiome = 0;
+        tier1Items[12].lootableBiome = 1;
+        tier1Items[13].lootableBiome = 2;
+        tier1Items[14].lootableBiome = 3;
+        tier1Items[15].lootableBiome = 2;
+        tier1Items[16].lootableBiome = 3;
+        tier1Items[17].lootableBiome = 3;
+        tier1Items[18].lootableBiome = 1;
+        tier1Items[19].lootableBiome = 1;
     }
 
     void SetTier2Needs()
@@ -323,8 +386,8 @@ public class ItemManager : MonoBehaviour
     {
         if(tier == 1)
         {
-            Debug.Log("child: " + itemSlotsTier1[slotId].transform.GetChild(0).name);
-            Debug.Log("child: " + itemSlotsTier1[slotId].transform.GetChild(1).name);
+            //Debug.Log("child: " + itemSlotsTier1[slotId].transform.GetChild(0).name);
+            //Debug.Log("child: " + itemSlotsTier1[slotId].transform.GetChild(1).name);
             TMP_Text countText = itemSlotsTier1[slotId].transform.Find("ItemCount").GetComponent<TMP_Text>();
             countText.text = tier1ItemCounts[slotId].ToString();
             Image slotImage = itemSlotsTier1[slotId].transform.Find("Item").GetComponent<Image>();
@@ -389,22 +452,50 @@ public class ItemManager : MonoBehaviour
 
     }
 
-    public void AddItemToCount(int tier, int id, Item newItem)
+    public void RemoveItemFromCount(Item item)
     {
-        newItem.item1Knowledge = true;
-        newItem.item2Knowledge = true;
+        int tier = item.itemTier;
+        int id = item.itemId;
 
+        if (tier == 1)
+        {
+            tier1ItemCounts[id]--;
+        }
         if (tier == 2)
         {
-            tier2ItemCounts[id] = tier2ItemCounts[id] + 1;
-            ItemManager.instance.RefreshItemSlot(2, id);
-
+            tier2ItemCounts[id]--;
         }
         if (tier == 3)
         {
-            tier3ItemCounts[id] = tier3ItemCounts[id] + 1;
-            ItemManager.instance.RefreshItemSlot(3, id);
+            tier3ItemCounts[id]--;
         }
+
+        ItemManager.instance.RefreshItemSlot(tier, id);
+    }
+
+    public void AddItemToCount(Item item)
+    {
+        int tier = item.itemTier;
+        int id = item.itemId;
+
+        item.item1Knowledge = true;
+        item.item2Knowledge = true;
+
+        if(tier == 1)
+        {
+            tier1ItemCounts[id]++;
+        }
+        if (tier == 2)
+        {
+            tier2ItemCounts[id]++;
+        }
+        if (tier == 3)
+        {
+            tier3ItemCounts[id]++;
+        }
+
+        ItemManager.instance.RefreshItemSlot(tier, id);
+
     }
 
     public Item GainRandomKnowledge(int tier)
@@ -442,13 +533,13 @@ public class ItemManager : MonoBehaviour
         // Update item1Knowledge or item2Knowledge to true
         if (!selectedItem.item1Knowledge)
         {
-            Debug.Log("Set knowledge to true for: " + selectedItem.itemName + "- need 1");
+            Debug.Log("Set knowledge to true for: " + selectedItem.itemName + "- need 0");
             selectedItem.item1Knowledge = true;
             selectedKnowledge = 0;
         }
         else if (!selectedItem.item2Knowledge)
         {
-            Debug.Log("Set knowledge to true for: " + selectedItem.itemName + "- need 2");
+            Debug.Log("Set knowledge to true for: " + selectedItem.itemName + "- need 1");
             selectedItem.item2Knowledge = true;
             selectedKnowledge = 1;
         }
@@ -456,6 +547,74 @@ public class ItemManager : MonoBehaviour
         // Return the modified item
         LogTextManager.instance.ReceiveKnowledgeData(selectedItem, selectedKnowledge);
         return selectedItem;
+    }
+
+    private void Update()
+    {
+        return;
+
+        //For testing purposes
+        
+        if (Input.GetKeyDown(KeyCode.A))
+            GainRandomKnowledgeByBiome(0);
+    }
+
+    public Item GainRandomKnowledgeByBiome(int biomeId)
+    {
+        List<Item> currentBiomeItems = GetItemsOfBiome(biomeId);
+
+        Item chosenTier1Item = currentBiomeItems[UnityEngine.Random.Range(0, currentBiomeItems.Count)];
+
+        Item chosenTier2Item = null;
+        int knowledgeIdSlot = -1;
+
+        for (int i = 0; i < tier2Items.Count; i++)
+        {
+            if (tier2Items[i].neededItemsItem[0] == chosenTier1Item)
+            {
+                chosenTier2Item = tier2Items[i];
+                knowledgeIdSlot = 0;
+                break;
+            }
+            else if (tier2Items[i].neededItemsItem[1] == chosenTier1Item)
+            {
+                chosenTier2Item = tier2Items[i];
+                knowledgeIdSlot = 1;
+                break;
+            }
+        }
+
+        int selectedKnowledge = -1;
+        if (knowledgeIdSlot == 0)
+        {
+            Debug.Log("Set knowledge to true for: " + chosenTier2Item.itemName + " - need 0");
+            chosenTier2Item.item1Knowledge = true;
+            selectedKnowledge = 0;
+        }
+        else if (knowledgeIdSlot == 1)
+        {
+            Debug.Log("Set knowledge to true for: " + chosenTier2Item.itemName + " - need 1");
+            chosenTier2Item.item2Knowledge = true;
+            selectedKnowledge = 1;
+        }
+
+        // Return the modified item
+        LogTextManager.instance.ReceiveKnowledgeData(chosenTier2Item, selectedKnowledge);
+        return chosenTier2Item;
+    }
+
+
+    public List<Item> GetItemsOfBiome(int biomeId)
+    {
+        List<Item> biomeLoot = new List<Item> { };
+
+        for (int i = 0; i < tier1Items.Count; i++)
+        {
+            if (tier1Items[i].lootableBiome == biomeId)
+                biomeLoot.Add(tier1Items[i]);
+        }
+
+        return biomeLoot;
     }
 
 }
@@ -475,6 +634,11 @@ public class Item
     public string infoText = "Placeholder text for flavourful story and information about this item about what does it do and so on. Doesn't really give anything insightful gameplay wise.";
     public int itemId;
     public Sprite itemSprite;
+    public int lootableBiome = -1;
+
+    public int buffType = -1;
+    public int buffValue = -1;
+    public int buffBiome = -1;
 
     // Default constructor
     public Item()
@@ -491,5 +655,12 @@ public class Item
         this.itemName = itemName;
         this.itemTier = itemTier;
         this.infoText = flavourText;
+    }
+
+    public void SetBuffValues(int type, int value, int biome)
+    {
+        this.buffType = type;
+        this.buffValue = value;
+        this.buffBiome = biome;
     }
 }

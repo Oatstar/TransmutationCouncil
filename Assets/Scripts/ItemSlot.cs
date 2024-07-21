@@ -48,6 +48,8 @@ public class ItemSlot : MonoBehaviour, IDropHandler {
             {
                 //eventData.pointerDrag.transform.GetComponent<DragManager>().DropCurrentlyHolding();
                 Debug.Log("Slot is full. Returning to original slot.");
+                InfoTextPopupManager.instance.SpawnInfoTextPopup("Slot full");
+
             }
             else if(DragManager.instance.currentlyDragging != null)
             {
@@ -62,12 +64,28 @@ public class ItemSlot : MonoBehaviour, IDropHandler {
 
     public void DropIntoSlot(Item dropItem)
     {
-        slotFull = true;
-        GetComponent<CircleSlotController>().DropNewItem(dropItem);
+        if(this.gameObject.tag == "CirclePanel")
+        {
+            slotFull = true;
+            GetComponent<CircleSlotController>().DropNewItem(dropItem);
+            DragManager.instance.DroppedInSlot(true);
+        }
+        if (this.gameObject.tag == "EquipmentSlot")
+        {
+            if (!CombatManager.instance.CanModifyCombat())
+            {
+                InfoTextPopupManager.instance.SpawnInfoTextPopup("Combat changes only when timer is in green color.");
+                return;
+            }
+            
+            slotFull = true;
+            GetComponent<EquipmentSlotsController>().DropNewItem(dropItem);
+            DragManager.instance.DroppedInSlot(true);
+        }
         //item.transform.SetParent(this.transform, false);
         //item.transform.localPosition = new Vector3(0, 0, 0);
 
-        
+
     }
 
     public void ClearSlot()

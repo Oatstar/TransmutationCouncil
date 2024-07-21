@@ -7,23 +7,55 @@ public class TransmuteManager : MonoBehaviour
     public CircleSlotController circleSlot1;
     public CircleSlotController circleSlot2;
 
+    [SerializeField] bool transmutationOnGoing = false;
+
+    public static TransmuteManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+    
     public void StartTransmute()
+    {
+        if (GetTransmutationOnGoing())
+        {
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Wait for transmutation to finish");
+            return;
+        }
+
+        transmutationOnGoing = true;
+        FinishTransmute();
+    }
+
+    public bool GetTransmutationOnGoing()
+    {
+        return transmutationOnGoing;
+    }
+
+    void FinishTransmute()
     {
         Item item1 = circleSlot1.currentItem;
         Item item2 = circleSlot2.currentItem;
 
-        if(item1 == null || item2 == null)
+        if (item1 == null || item2 == null)
         {
-            Debug.Log("Empty slots on transmutation circle. Both items must be in place");
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Both pedestals must have ");
+
+            Debug.Log("Both pedestals must have an item");
         }
         else
         {
             Item newItem = CheckForTransmute(item1, item2);
-            if(newItem != null)
+            if (newItem != null)
             {
                 ItemManager.instance.RefreshUnlock(newItem);
             }
         }
+
+        InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmutation finished.\n ");
+
+        transmutationOnGoing = false;
     }
 
     Item CheckForTransmute(Item item1, Item item2)
@@ -41,7 +73,7 @@ public class TransmuteManager : MonoBehaviour
                     Debug.Log(successText);
                     LogTextManager.instance.AddSpecificHintToLog(successText);
 
-                    ItemManager.instance.AddItemToCount(2, tier2Item.itemId, tier2Item);
+                    ItemManager.instance.AddItemToCount(tier2Item);
 
                     return tier2Item;
                 }
@@ -58,11 +90,15 @@ public class TransmuteManager : MonoBehaviour
 
                     LogTextManager.instance.AddSpecificHintToLog(succesText);
 
-                    ItemManager.instance.AddItemToCount(3, tier3Item.itemId, tier3Item);
+                    ItemManager.instance.AddItemToCount(tier3Item);
 
                     return tier3Item;
                 }
             }
+        }
+        else
+        {
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Both items must be of the same tier");
         }
 
 

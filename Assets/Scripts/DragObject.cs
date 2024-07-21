@@ -12,8 +12,14 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
     //public GameObject dragContainer;
 
 
+    public static DragObject instance;
+
+    
     void Awake()
     {
+        instance = this;
+
+
         //dragContainer = GameObject.Find("DragItemContainer");
         //spriteImage = dragContainer.transform.Find("Item").GetComponent<Image>();
     }
@@ -26,10 +32,28 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        DragManager.instance.SetDragData(GetComponent<ItemController>().GetItem());
+        if (TransmuteManager.instance.GetTransmutationOnGoing())
+        {
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Waiting for transmutation to finish");
+            return;
+        }
+
+        if (this.transform.parent.tag == "CirclePanel")
+        {
+            DragManager.instance.SetDragData(transform.parent.GetComponent<CircleSlotController>().currentItem, this.transform.parent.gameObject, this);
+        }
+        else if (this.transform.parent.tag == "EquipmentSlot")
+        {
+            DragManager.instance.SetDragData(transform.parent.GetComponent<EquipmentSlotsController>().currentItem, this.transform.parent.gameObject, this);
+        }
+        else
+        {
+            DragManager.instance.SetDragData(GetComponent<ItemController>().GetItem(), this.transform.parent.gameObject, this);
+        }
+
         //spriteImage.gameObject.SetActive(true);
-        Debug.Log("drag: " + this.GetComponent<ItemController>().GetItemData());
-        Debug.Log("OnBeginDrag");
+        //Debug.Log("drag: " + this.GetComponent<ItemController>().GetItemData());
+        //Debug.Log("OnBeginDrag");
         //originalParent = this.transform.parent.gameObject;
 
         //CheckWorkStation();
@@ -44,6 +68,9 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (TransmuteManager.instance.GetTransmutationOnGoing())
+            return;
+
         //Debug.Log("OnDrag");
         DragManager.instance.RefreshPosition();
 
@@ -52,7 +79,32 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
 
     public void OnEndDrag(PointerEventData eventData)
     {
+
+        if (TransmuteManager.instance.GetTransmutationOnGoing())
+            return;
+
+        Debug.Log("Closed dragwindow");
+        if(!DragManager.instance.droppedIntoSlot)
+        {
+            if(transform.parent.tag == "InventorySlot")
+            {
+                Debug.Log("Inventory item not dropped into slot. Returning to inventory");
+                DragManager.instance.ReturnObjectToInventory(DragManager.instance.currentlyDragging);
+            }
+            else if(transform.parent.tag == "CirclePanel")
+            {
+                Debug.Log("CirclePanel item not dropped into slot. Returning to inventory");
+                DragManager.instance.ReturnObjectToInventory(DragManager.instance.currentlyDragging);
+            }
+            else if (transform.parent.tag == "EquipmentSlot")
+            {
+                Debug.Log("EquipmentSlot item not dropped into slot. Returning to inventory");
+                DragManager.instance.ReturnObjectToInventory(DragManager.instance.currentlyDragging);
+            }
+        }
+
         DragManager.instance.CloseDragWindow();
+
         //Debug.Log("OnEndDrag");
         //canvasGroup.alpha = 1f;
         //canvasGroup.blocksRaycasts = true;
