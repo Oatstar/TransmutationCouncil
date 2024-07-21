@@ -9,7 +9,7 @@ public class GameMasterManager : MonoBehaviour
 
     private void Start()
     {
-        Invoke("TriggerRandomHint",15f);
+
     }
 
     private void Update()
@@ -18,7 +18,7 @@ public class GameMasterManager : MonoBehaviour
         if(timer >= hintInterval)
         {
             timer = 0;
-            TriggerRandomHint();
+            //TriggerRandomHint();
         }
     }
 

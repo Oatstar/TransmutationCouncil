@@ -40,7 +40,7 @@ public class TransmuteManager : MonoBehaviour
 
         if (item1 == null || item2 == null)
         {
-            InfoTextPopupManager.instance.SpawnInfoTextPopup("Both pedestals must have ");
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Both pedestals must have an item");
 
             Debug.Log("Both pedestals must have an item");
         }
@@ -53,7 +53,9 @@ public class TransmuteManager : MonoBehaviour
             }
         }
 
-        InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmutation finished.\n ");
+        
+
+        //InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmutation finished.\n ");
 
         transmutationOnGoing = false;
     }
@@ -70,10 +72,14 @@ public class TransmuteManager : MonoBehaviour
                 if (tier2Item.neededItems.Contains(item1.itemId) && tier2Item.neededItems.Contains(item2.itemId))
                 {
                     string successText = $"{item1.itemName} and {item2.itemName} create {tier2Item.itemName}.";
+                    InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmute successful!");
                     Debug.Log(successText);
                     LogTextManager.instance.AddSpecificHintToLog(successText);
 
                     ItemManager.instance.AddItemToCount(tier2Item);
+
+                    circleSlot1.ExpendItem();
+                    circleSlot2.ExpendItem();
 
                     return tier2Item;
                 }
@@ -86,11 +92,15 @@ public class TransmuteManager : MonoBehaviour
                 if (tier3Item.neededItems.Contains(item1.itemId) && tier3Item.neededItems.Contains(item2.itemId))
                 {
                     string succesText = $"{item1.itemName} and {item2.itemName} create {tier3Item.itemName}.";
+                    InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmute successful!");
                     Debug.Log(succesText);
 
                     LogTextManager.instance.AddSpecificHintToLog(succesText);
 
                     ItemManager.instance.AddItemToCount(tier3Item);
+
+                    circleSlot1.ExpendItem();
+                    circleSlot2.ExpendItem();
 
                     return tier3Item;
                 }

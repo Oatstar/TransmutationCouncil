@@ -86,8 +86,9 @@ public class BigTooltip : MonoBehaviour
         //itemImage.sprite = tooltipItem.itemSprite;
         itemNameText.text = tooltipItem.itemName;
         itemFlavourText.text = tooltipItem.infoText;
+        targetBiomeText.text = "";
 
-        if(tooltipItem.itemTier == 2 || tooltipItem.itemTier == 3)
+        if (tooltipItem.itemTier == 2 || tooltipItem.itemTier == 3)
         {
             Item neededItem1 = null;
             Item neededItem2 = null;
@@ -123,16 +124,14 @@ public class BigTooltip : MonoBehaviour
                 }
             }
 
-            if(tooltipItem.itemTier == 1 ||tooltipItem.itemTier == 2)
+            if (tooltipItem.itemTier == 2)
             {
                 buffInformation.text = ItemManager.instance.GetBuffText(tooltipItem);
             }
-
-            if(tooltipItem.itemTier == 3)
+            else if (tooltipItem.itemTier == 3)
             {
                 buffInformation.text = "Equip all 3 of the tier 3 items to escape the Shadow Council!";
             }
-
             //if (currentTier != 0)
             //{
             //    neededItem1NameText.text = neededItem1.itemName;
@@ -152,12 +151,17 @@ public class BigTooltip : MonoBehaviour
         }
         else
         {
+            if (tooltipItem.itemTier == 1)
+            {
+                buffInformation.text = ItemManager.instance.GetBuffText(tooltipItem);
+                targetBiomeText.text = "Found in: " + tooltipItem.lootableBiome;
+            }
+
             neededItem1NameText.text = "";
             neededItem2NameText.text = "";
             neededItem1Image.color = new Color(1, 1, 1, 0);
             neededItem2Image.color = new Color(1, 1, 1, 0);
         }
-        targetBiomeText.text = "";
 
 
     gameObject.SetActive(true);

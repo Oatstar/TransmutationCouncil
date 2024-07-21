@@ -46,7 +46,10 @@ public class DragManager : MonoBehaviour
         else if (parentObject.tag == "CirclePanel")
         {
             parentObject.GetComponent<CircleSlotController>().RemoveItem();
-
+        }
+        else if (parentObject.tag == "EquipmentSlot")
+        {
+            parentObject.GetComponent<EquipmentSlotsController>().RemoveItem();
         }
     }
 

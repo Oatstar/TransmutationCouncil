@@ -59,10 +59,13 @@ public class CombatManager : MonoBehaviour
         itemDropChance = itemDropChanceDefault;
         knowledgeDropChance = knowledgeDropChanceDefault;
 
+        currentEquipments.Clear();
         for (int i = 0; i < equipmentSlotControllers.Length; i++)
         {
-            if(equipmentSlotControllers[i].currentItem != null)
+            if(equipmentSlotControllers[i].currentItem != null && equipmentSlotControllers[i].currentItem.itemName != "")
+            {
                 currentEquipments.Add(equipmentSlotControllers[i].currentItem);
+            }
         }
 
         for (int i = 0; i < currentEquipments.Count; i++)
@@ -83,6 +86,9 @@ public class CombatManager : MonoBehaviour
                 }
             }
         }
+
+        RefreshTextValues();
+
     }
 
     public void ChangeBiome(int newBiome)
@@ -99,10 +105,18 @@ public class CombatManager : MonoBehaviour
         knowledgeDropChanceText.text = "Knowledge chance: " + knowledgeDropChance.ToString() + "%";
     }
 
-    void StartAttacking()
+    public void ToggleAttacking()
     {
-        SetEnemy();
-        attacking = true;
+        if(!attacking)
+        {
+            SetEnemy();
+            attacking = true;
+        }
+        else
+        {
+            enemyHealth = 0;
+            attacking = false;
+        }
     }
 
     void SetEnemy()
@@ -129,6 +143,7 @@ public class CombatManager : MonoBehaviour
     void DoAttack()
     {
         enemyHealth -= attackDamage;
+        enemyHealthSlider.value = Tools.instance.NormalizeToSlider(enemyHealth, enemyMaxHealth);
         if(enemyHealth <= 0)
         {
             EnemyDestroyed();
