@@ -48,7 +48,7 @@ public class InfoFloaterScript : MonoBehaviour
     public void ShowInfoText(string infoTextString)
     {
         infoFloaterText.text = infoTextString;
-        float padding = 4f;
+        float padding = 0f;
         Vector2 backgroundSize = new Vector2(infoFloaterText.preferredWidth + padding * 2f, infoFloaterText.preferredHeight + padding * 2f);
         thisRectTransform.sizeDelta = backgroundSize;
 

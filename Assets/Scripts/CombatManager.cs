@@ -6,9 +6,9 @@ using TMPro;
 
 public class CombatManager : MonoBehaviour
 {
-    public int enemyHealth = 20;
-    public int enemyMaxHealth = 20;
-    public int attackDamage = 3;
+    public int enemyHealth = 10;
+    public int enemyMaxHealth = 10;
+    public int attackDamage = 5;
     public List<Item> currentEquipments = new List<Item> { };
     public int currentBiome = 0;
     public int attackIntervalDefault = 10;
@@ -17,7 +17,7 @@ public class CombatManager : MonoBehaviour
 
     public float attackTimer = 0;
 
-    public int attackInterval = 10;
+    public int attackInterval = 8;
     public int itemDropChance = 15;
     public int knowledgeDropChance = 15;
 
@@ -46,6 +46,11 @@ public class CombatManager : MonoBehaviour
 
     private void Start()
     {
+        enemyMaxHealth = 10;
+        attackInterval = 9;
+        attackIntervalDefault = 9;
+        attackDamage = 5;
+
         ChangeBiome(0);
         enemyHealth = 0;
         enemyHealthSlider.value = 0;

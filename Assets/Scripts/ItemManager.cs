@@ -23,6 +23,7 @@ public class ItemManager : MonoBehaviour
     public Sprite[] tier2Images;
     public Sprite[] tier3Images;
 
+    public bool[] tier1Unlocks = new bool[20];
     public bool[] tier2Unlocks = new bool[10];
     public bool[] tier3Unlocks = new bool[3];
 
@@ -38,6 +39,10 @@ public class ItemManager : MonoBehaviour
 
     Color fullColor = new Color(1, 1f, 1f, 1.0f);
     Color blackColor = new Color(0, 0f, 0f, 0.75f);
+
+    float blackAlpha = 0.75f;
+    float fullAlpha = 1.0f;
+    float emptyAlpha = 0.35f;
 
     Color emptyColor = new Color(1, 1f, 1f, 0.35f);
     Color noColor = new Color(1, 1f, 1f, 0.0f);
@@ -351,7 +356,12 @@ public class ItemManager : MonoBehaviour
     {
         for (int i = 0; i < tier1ItemCounts.Length; i++)
         {
-            tier1ItemCounts[i] = 1;
+            int randomChance = UnityEngine.Random.Range(0, 100);
+            if(randomChance < 25)
+            {
+                tier1ItemCounts[i] = 1;
+                tier1Unlocks[i] = true;
+            }
         }
 
         for (int i = 0; i < tier2ItemCounts.Length; i++)
@@ -364,6 +374,21 @@ public class ItemManager : MonoBehaviour
             tier3ItemCounts[i] = 0;
         }
 
+
+    }
+
+    void RefreshItemSlotsOfTier(int tier)
+    {
+        if(tier == 1)
+            for (int i = 0; i < itemSlotsTier1.Count; i++)
+                RefreshItemSlot(1, i);
+        else if (tier == 2)
+            for (int i = 0; i < itemSlotsTier2.Count; i++)
+                RefreshItemSlot(2, i);
+        else if (tier == 3)
+            for (int i = 0; i < itemSlotsTier3.Count; i++)
+                RefreshItemSlot(3, i);
+    
     }
 
     void RefreshAllItemsSlots()
@@ -386,16 +411,39 @@ public class ItemManager : MonoBehaviour
     {
         if(tier == 1)
         {
+            //Debug.Log("Refreshing item slot" + tier + ". " + slotId);
             //Debug.Log("child: " + itemSlotsTier1[slotId].transform.GetChild(0).name);
             //Debug.Log("child: " + itemSlotsTier1[slotId].transform.GetChild(1).name);
             TMP_Text countText = itemSlotsTier1[slotId].transform.Find("ItemCount").GetComponent<TMP_Text>();
             countText.text = tier1ItemCounts[slotId].ToString();
             Image slotImage = itemSlotsTier1[slotId].transform.Find("Item").GetComponent<Image>();
+
+            Material m1 = slotImage.material;
+            Material m2 = new Material(m1);
+
+
             //Debug.Log("tier " + tier + "  slot: " + slotId + " - count: "+ tier1ItemCounts[slotId]);
             if (tier1ItemCounts[slotId] <= 0)
-                slotImage.color = blackColor;
+            {
+                if (tier1Unlocks[slotId])
+                {
+                    m2.SetColor("_SpriteColor", emptyColor);
+                    m2.SetFloat("_ColorAlpha", emptyAlpha);
+                }
+                else
+                {
+                    m2.SetColor("_SpriteColor", blackColor);
+                    m2.SetFloat("_ColorAlpha", blackAlpha);
+                }
+            }
             else
-                slotImage.color = fullColor;
+            {
+                m2.SetColor("_SpriteColor", fullColor);
+                m2.SetFloat("_ColorAlpha", fullAlpha);
+            }
+
+            slotImage.material = m2;
+
         }
         else if (tier == 2)
         {
@@ -403,11 +451,31 @@ public class ItemManager : MonoBehaviour
             countText.text = tier2ItemCounts[slotId].ToString();
             Image slotImage = itemSlotsTier2[slotId].transform.Find("Item").GetComponent<Image>();
 
+            Material m1 = slotImage.material;
+            Material m2 = new Material(m1);
+
             //Debug.Log("tier " + tier + "  slot: " + slotId + " - count: " + tier2ItemCounts[slotId]);
             if (tier2ItemCounts[slotId] <= 0)
-                slotImage.color = blackColor;
+            {
+                if(tier2Items[slotId].item1Knowledge && tier2Items[slotId].item2Knowledge)
+                {
+                    m2.SetColor("_SpriteColor", emptyColor);
+                    m2.SetFloat("_ColorAlpha", emptyAlpha);
+                }
+                else
+                {
+                    m2.SetColor("_SpriteColor", blackColor);
+                    m2.SetFloat("_ColorAlpha", blackAlpha);
+                }
+            }
             else
-                slotImage.color = fullColor;
+            {
+                m2.SetColor("_SpriteColor", fullColor);
+                m2.SetFloat("_ColorAlpha", fullAlpha);
+            }
+
+            slotImage.material = m2;
+
         }
         else if (tier == 3)
         {
@@ -415,11 +483,30 @@ public class ItemManager : MonoBehaviour
             countText.text = tier3ItemCounts[slotId].ToString();
             Image slotImage = itemSlotsTier3[slotId].transform.Find("Item").GetComponent<Image>();
 
+            Material m1 = slotImage.material;
+            Material m2 = new Material(m1);
+
             //Debug.Log("tier " + tier + "  slot: " + slotId + " - count: " + tier3ItemCounts[slotId]);
             if (tier3ItemCounts[slotId] <= 0)
-                slotImage.color = blackColor;
+            {
+                if(tier3Unlocks[slotId])
+                {
+                    m2.SetColor("_SpriteColor", emptyColor);
+                    m2.SetFloat("_ColorAlpha", emptyAlpha);
+                }
+                else
+                {
+                    m2.SetColor("_SpriteColor", blackColor);
+                    m2.SetFloat("_ColorAlpha", blackAlpha);
+                }
+            }
             else
-                slotImage.color = fullColor;
+            {
+                m2.SetColor("_SpriteColor", fullColor);
+                m2.SetFloat("_ColorAlpha", fullAlpha);
+            }
+
+            slotImage.material = m2;
         }
     }
 
@@ -470,7 +557,7 @@ public class ItemManager : MonoBehaviour
             tier3ItemCounts[id]--;
         }
 
-        ItemManager.instance.RefreshItemSlot(tier, id);
+        RefreshItemSlot(tier, id);
     }
 
     public void AddItemToCount(Item item)
@@ -484,6 +571,7 @@ public class ItemManager : MonoBehaviour
         if(tier == 1)
         {
             tier1ItemCounts[id]++;
+            tier1Unlocks[item.itemId] = true;
         }
         if (tier == 2)
         {
@@ -494,7 +582,7 @@ public class ItemManager : MonoBehaviour
             tier3ItemCounts[id]++;
         }
 
-        ItemManager.instance.RefreshItemSlot(tier, id);
+        RefreshItemSlot(tier, id);
 
     }
 
