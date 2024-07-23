@@ -38,7 +38,8 @@ public class TransmuteManager : MonoBehaviour
         Item item1 = circleSlot1.currentItem;
         Item item2 = circleSlot2.currentItem;
 
-        if (item1 == null || item2 == null)
+        Debug.Log("itemm1: " + item1.itemId);
+        if (item1.itemId == -1 || item2.itemId == -1)
         {
             InfoTextPopupManager.instance.SpawnInfoTextPopup("Both pedestals must have an item");
 
@@ -62,6 +63,7 @@ public class TransmuteManager : MonoBehaviour
 
     Item CheckForTransmute(Item item1, Item item2)
     {
+
         if(item1.itemTier == 1 && item2.itemTier == 1)
         {
             Debug.Log("Both items are tier 2: "+item1.itemName + " ... "+item2.itemName);

@@ -33,10 +33,45 @@ public class InfoFloaterScript : MonoBehaviour
     private void SetPosition()
     {
         Vector2 mousePosition = Input.mousePosition;
-
         Vector2 localPoint;
+        Vector2 offset = new Vector2(0, 0);
+
+        // Get the screen dimensions
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+
+        // Get the dimensions of the tooltip
+        float tooltipWidth = thisRectTransform.sizeDelta.x;
+        float tooltipHeight = thisRectTransform.sizeDelta.y;
+
+        // Determine the horizontal offset
+        if (mousePosition.x < screenWidth / 2)
+        {
+            // Mouse is on the left side, offset to the right
+            offset.x = tooltipWidth;
+        }
+        else
+        {
+            // Mouse is on the right side, offset to the left
+            offset.x = -tooltipWidth;
+        }
+
+        // Determine the vertical offset
+        if (mousePosition.y < screenHeight / 2)
+        {
+            // Mouse is on the bottom side, offset to the top
+            offset.y = tooltipHeight / 2;
+        }
+        else
+        {
+            // Mouse is on the top side, offset to the bottom
+            offset.y = -tooltipHeight / 2;
+        }
+
+        // Convert the screen point to a local point within the canvas
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, mousePosition, canvas.worldCamera, out localPoint);
-        Vector2 offset = new Vector2(-15, 25);
+
+        // Apply the offset
         thisRectTransform.anchoredPosition = localPoint + offset;
     }
 
@@ -47,12 +82,13 @@ public class InfoFloaterScript : MonoBehaviour
 
     public void ShowInfoText(string infoTextString)
     {
+        gameObject.SetActive(true);
+
         infoFloaterText.text = infoTextString;
         float padding = 0f;
-        Vector2 backgroundSize = new Vector2(infoFloaterText.preferredWidth + padding * 2f, infoFloaterText.preferredHeight + padding * 2f);
+        Vector2 backgroundSize = new Vector2(infoFloaterText.preferredWidth + padding * 2f, infoFloaterText.preferredHeight/2);
         thisRectTransform.sizeDelta = backgroundSize;
 
-        gameObject.SetActive(true);
         SetPosition();
         Invoke("HideOnDelay", 3f);
     }

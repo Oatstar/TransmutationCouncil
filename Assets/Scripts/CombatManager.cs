@@ -16,6 +16,7 @@ public class CombatManager : MonoBehaviour
     public int knowledgeDropChanceDefault = 15;
 
     public float attackTimer = 0;
+    public bool combatActive = false;
 
     public int attackInterval = 8;
     public int itemDropChance = 15;
@@ -38,6 +39,11 @@ public class CombatManager : MonoBehaviour
 
 
     public static CombatManager instance;
+
+    public bool GetAttacking()
+    {
+        return attacking;
+    }
 
     private void Awake()
     {
@@ -98,6 +104,12 @@ public class CombatManager : MonoBehaviour
 
     public void ChangeBiome(int newBiome)
     {
+        if (CombatManager.instance.GetAttacking())
+        {
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Can't change biome while fighting");
+            return;
+        }
+
         currentBiome = newBiome;
         biomeImage.sprite = biomeSprites[currentBiome];
         biomeText.text = GetBiomeName(currentBiome);

@@ -20,7 +20,7 @@ public class BigTooltip : MonoBehaviour
     public TMP_Text targetBiomeText;
     public TMP_Text buffInformation;
 
-
+    public Canvas canvas;
     //[SerializeField] private Camera uiCamera;
 
     private static BigTooltip instance;
@@ -44,16 +44,18 @@ public class BigTooltip : MonoBehaviour
     private void Update()
     {
         Vector2 mousePosition = Input.mousePosition;
-
+        Vector2 movePos;
         Vector2 offset = new Vector2(0, 0);
+
         // Get the width of the screen
         float screenWidth = Screen.width;
-        float screenheight = Screen.height;
+        float screenHeight = Screen.height;
 
         // Get the width of the tooltip rect
         float tooltipWidth = thisRectTransform.sizeDelta.x;
         float tooltipHeight = thisRectTransform.sizeDelta.y;
 
+        // Determine the offset based on the mouse position
         if (mousePosition.x < screenWidth / 2)
         {
             // Mouse is on the left side, offset to the right
@@ -64,15 +66,26 @@ public class BigTooltip : MonoBehaviour
             // Mouse is on the right side, offset to the left
             offset.x = -tooltipWidth / 2;
         }
-        if (mousePosition.y < screenheight * 0.5f)
+        if (mousePosition.y < screenHeight / 2)
         {
+            // Mouse is on the bottom side, offset to the top
             offset.y = tooltipHeight / 2;
         }
         else
         {
+            // Mouse is on the top side, offset to the bottom
             offset.y = -tooltipHeight / 2;
         }
-        thisRectTransform.anchoredPosition = mousePosition + offset;
+
+        // Convert mouse position to local position in the canvas
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, mousePosition, canvas.worldCamera, out movePos);
+
+        // Convert offset to world coordinates and add it to movePos
+        Vector3 worldOffset = canvas.transform.TransformPoint(offset) - canvas.transform.TransformPoint(Vector3.zero);
+        Vector3 worldPos = canvas.transform.TransformPoint(movePos) + worldOffset;
+
+        // Set the position of the tooltip
+        thisRectTransform.position = worldPos;
 
     }
 

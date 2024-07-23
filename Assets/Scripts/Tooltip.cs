@@ -35,8 +35,10 @@ public class Tooltip : MonoBehaviour
     private void Update()
     {
         Vector2 mousePosition = Input.mousePosition;
+        Vector2 movePos;
 
         Vector2 offset = new Vector2(0, 0);
+
         // Get the width of the screen
         float screenWidth = Screen.width;
         float screenheight = Screen.height;
@@ -48,14 +50,14 @@ public class Tooltip : MonoBehaviour
         if (mousePosition.x < screenWidth / 2)
         {
             // Mouse is on the left side, offset to the right
-            offset.x = tooltipWidth/2;
+            offset.x = tooltipWidth / 2;
         }
         else
         {
             // Mouse is on the right side, offset to the left
-            offset.x = -tooltipWidth/2;
+            offset.x = -tooltipWidth / 2;
         }
-        if(mousePosition.y < screenWidth /2)
+        if (mousePosition.y < screenWidth / 2)
         {
             offset.y = tooltipHeight / 2;
         }
@@ -63,27 +65,34 @@ public class Tooltip : MonoBehaviour
         {
             offset.y = -tooltipHeight / 2;
         }
-        thisRectTransform.anchoredPosition = mousePosition+offset;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, mousePosition, canvas.worldCamera, out movePos);
+        Vector3 worldPos = canvas.transform.TransformPoint(movePos);
+
+        // Convert offset to world coordinates and add it to worldPos
+        Vector3 worldOffset = canvas.transform.TransformPoint(offset) - canvas.transform.TransformPoint(Vector3.zero);
+        transform.position = worldPos + worldOffset;
+
+        //thisRectTransform.anchoredPosition = mousePosition+offset;
 
     }
 
     private void ShowToolTip(string tooltipString)
     {
+        gameObject.SetActive(true);
+
         tooltipText.text = tooltipString;
         float padding = 4f;
         Vector2 backgroundSize = new Vector2(tooltipText.preferredWidth + padding * 2f, tooltipText.preferredHeight + padding * 2f);
         thisRectTransform.sizeDelta = backgroundSize;
-
-        gameObject.SetActive(true);
     }
 
     private void HideToolTip()
     {
         gameObject.SetActive(false);
-        tooltipText.text = "  ";
-        float padding = 4f;
-        Vector2 backgroundSize = new Vector2(tooltipText.preferredWidth + padding * 2f, tooltipText.preferredHeight + padding * 2f);
-        thisRectTransform.sizeDelta = backgroundSize;
+
+        tooltipText.text = "";
+        thisRectTransform.sizeDelta = new Vector2(0, 0);
     }
 
 

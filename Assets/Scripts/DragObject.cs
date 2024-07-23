@@ -46,9 +46,11 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
         {
             DragManager.instance.SetDragData(transform.parent.GetComponent<EquipmentSlotsController>().currentItem, this.transform.parent.gameObject, this);
         }
-        else
+        else //if InventorySlot
         {
-            DragManager.instance.SetDragData(GetComponent<ItemController>().GetItem(), this.transform.parent.gameObject, this);
+            Item thisItem = GetComponent<ItemController>().GetItem();
+            if(ItemManager.instance.GetSpecificItemCount(thisItem) > 0)
+                DragManager.instance.SetDragData(thisItem, this.transform.parent.gameObject, this);
         }
 
         //spriteImage.gameObject.SetActive(true);
@@ -70,6 +72,8 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
     {
         if (TransmuteManager.instance.GetTransmutationOnGoing())
             return;
+        if (DragManager.instance.currentDragObject == null)
+            return;
 
         //Debug.Log("OnDrag");
         DragManager.instance.RefreshPosition();
@@ -81,6 +85,8 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
     {
 
         if (TransmuteManager.instance.GetTransmutationOnGoing())
+            return;
+        if (DragManager.instance.currentDragObject == null)
             return;
 
         Debug.Log("Closed dragwindow");

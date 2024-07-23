@@ -882,7 +882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -279.68002, y: -185.56}
+  m_AnchoredPosition: {x: -279.68005, y: -185.56}
   m_SizeDelta: {x: -585.14, y: -380.27}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &230637310
@@ -1329,6 +1329,7 @@ MonoBehaviour:
   neededItem2NameText: {fileID: 1644772835}
   targetBiomeText: {fileID: 786664309}
   buffInformation: {fileID: 2127587440}
+  canvas: {fileID: 1235194817}
 --- !u!114 &296321122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1504,7 +1505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd375e0e6b917348afd8474abe1c4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionalText: 'BIOME: Infernal Wastes'
+  optionalText: Infernal Wastes
 --- !u!114 &309159951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3584,7 +3585,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -46.210007, y: 0.000015258789}
+  m_AnchoredPosition: {x: -46.210022, y: 0.000015258789}
   m_SizeDelta: {x: -92.42, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &614037730
@@ -3711,7 +3712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: df85779f6985d9f4cb73ce1ad290de89, type: 2}
+  m_Material: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -5147,7 +5148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd375e0e6b917348afd8474abe1c4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionalText: 'BIOME: Enchanted Forest'
+  optionalText: Enchanted Forest
 --- !u!114 &815706531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5778,6 +5779,7 @@ MonoBehaviour:
     buffBiome: -1
   currentDragObject: {fileID: 0}
   droppedIntoSlot: 0
+  canvas: {fileID: 1235194817}
 --- !u!114 &912886793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5924,7 +5926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd375e0e6b917348afd8474abe1c4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionalText: 'BIOME: Crystal Caverns'
+  optionalText: Crystal Caverns
 --- !u!114 &914702336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8223,7 +8225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: df85779f6985d9f4cb73ce1ad290de89, type: 2}
+  m_Material: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -8342,7 +8344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1533021022
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9504,7 +9506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1708071557
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11464,7 +11466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd375e0e6b917348afd8474abe1c4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionalText: 'BIOME: Frozen Tundra'
+  optionalText: Frozen Tundra
 --- !u!114 &1987235904
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ public class DragManager : MonoBehaviour
 
     RectTransform dragBoxRectTransform;
     public bool droppedIntoSlot = false;
+    public Canvas canvas;
 
     public static DragManager instance;
 
@@ -78,9 +79,18 @@ public class DragManager : MonoBehaviour
 
     public void RefreshPosition()
     {
-        Vector2 mousePosition = Input.mousePosition;
+        //Vector2 mousePosition = Input.mousePosition;
+        //Vector2 movePos;
 
-        dragBoxRectTransform.anchoredPosition = mousePosition;
+        //RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, mousePosition, canvas.worldCamera, out movePos);
+        //dragBoxRectTransform.anchoredPosition = movePos;
+
+        Vector2 movePos;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,Input.mousePosition, canvas.worldCamera,out movePos);
+
+        dragBoxRectTransform.transform.position = canvas.transform.TransformPoint(movePos);
+
     }
 
     public void DroppedInSlot(bool state)

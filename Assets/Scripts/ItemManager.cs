@@ -726,6 +726,25 @@ public class ItemManager : MonoBehaviour
         }
         return text;
     }
+
+    public int GetSpecificItemCount(Item targetItem)
+    {
+        int id = targetItem.itemId;
+
+        if(targetItem.itemTier == 1)
+        {
+            return tier1ItemCounts[id];
+        }
+        if (targetItem.itemTier == 2)
+        {
+            return tier2ItemCounts[id];
+        }
+        if (targetItem.itemTier == 3)
+        {
+            return tier3ItemCounts[id];
+        }
+        return 0;
+    }
 }
 
 
