@@ -1,96 +1,91 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
-    [SerializeField] AudioSource basicClick;
-    [SerializeField] AudioSource mortar;
-    [SerializeField] AudioSource chopping;
-    [SerializeField] AudioSource dryer;
-    [SerializeField] AudioSource potionReady;
-    [SerializeField] AudioSource flameOn;
-    [SerializeField] AudioSource fireplace;
-    [SerializeField] AudioSource tickTock;
-    [SerializeField] AudioSource boilUp;
+    public AudioSource basicClick;
+    public AudioSource transmuteSound;
+    public AudioSource transmuteSuccess;
+    public AudioSource transmuteFailed;
+    public AudioSource combatFinished;
+    public AudioSource toggleCombat;
+    public AudioSource placeItem;
 
-    public static SoundManager instance;
-    [SerializeField] bool isMuted = false;
+    private bool isMuted = false;
 
-
-    private void Awake()
+    void Start()
     {
-        instance = this;
+        // Initialize all audio sources to unmuted if needed
+        UnmuteAllSounds();
     }
+
+
+    public void PlayTransmuteSound()
+    {
+        if (!isMuted) transmuteSound.Play();
+    }
+
 
     public void PlayBasicClick()
     {
-        basicClick.Play();
+        if (!isMuted) basicClick.Play();
     }
 
-    public void PlayMortar()
+    public void PlayTransmuteSuccess()
     {
-        mortar.Play();
+        if (!isMuted) transmuteSuccess.Play();
     }
 
-    public void PlayChopping()
+    public void PlayTransmuteFailed()
     {
-        chopping.Play();
+        if (!isMuted) transmuteFailed.Play();
     }
 
-    public void PlayDryer()
+    public void PlayCombatFinished()
     {
-        dryer.Play();
+        if (!isMuted) combatFinished.Play();
     }
 
-    public void PlayPotionReady()
+    public void PlayToggleCombat()
     {
-        potionReady.Play();
+        if (!isMuted) toggleCombat.Play();
     }
 
-    public void PlayFlameOn()
+    public void PlayPlaceItem()
     {
-        flameOn.Play();
-    }
-
-    public void PlayFireplace()
-    {
-        if(!fireplace.isPlaying)
-            fireplace.Play();
-    }
-
-    public void StopFireplace()
-    {
-        if (fireplace.isPlaying)
-            fireplace.Stop();
-    }
-
-    public void PlayTickTock()
-    {
-        tickTock.Play();
-    }
-
-    public void PlayBoilUp()
-    {
-        boilUp.Play();
+        if (!isMuted) placeItem.Play();
     }
 
     public void ToggleSounds()
     {
         isMuted = !isMuted;
-        SetMuteState(isMuted);
+
+        if (isMuted)
+        {
+            MuteAllSounds();
+        }
+        else
+        {
+            UnmuteAllSounds();
+        }
     }
 
-    private void SetMuteState(bool mute)
+    private void MuteAllSounds()
     {
-        basicClick.mute = mute;
-        mortar.mute = mute;
-        chopping.mute = mute;
-        dryer.mute = mute;
-        potionReady.mute = mute;
-        flameOn.mute = mute;
-        fireplace.mute = mute;
-        tickTock.mute = mute;
-        boilUp.mute = mute;
+        basicClick.mute = true;
+        transmuteSuccess.mute = true;
+        transmuteFailed.mute = true;
+        combatFinished.mute = true;
+        toggleCombat.mute = true;
+        placeItem.mute = true;
+    }
+
+    private void UnmuteAllSounds()
+    {
+        basicClick.mute = false;
+        transmuteSuccess.mute = false;
+        transmuteFailed.mute = false;
+        combatFinished.mute = false;
+        toggleCombat.mute = false;
+        placeItem.mute = false;
     }
 }

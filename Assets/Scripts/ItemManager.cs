@@ -136,11 +136,11 @@ public class ItemManager : MonoBehaviour
         tier1Items.Add(new Item("Fire Essence", 1, "A glowing red crystal that radiates heat"));
         tier1Items.Add(new Item("Water Droplet", 1, "A pristine droplet of pure water with magical properties"));
         tier1Items.Add(new Item("Earth Shard", 1, "A chunk of the ground infused with elemental earth energy"));
-        tier1Items.Add(new Item("Air Wisp", 1, "An ethereal, swirling mist of air"));
+        tier1Items.Add(new Item("Lava Shard", 1, "A shard of lava rock"));
         tier1Items.Add(new Item("Lightning Spark", 1, "A small, crackling ball of electricity"));
         tier1Items.Add(new Item("Ice Crystal", 1, "A shard of ice that never melts"));
         tier1Items.Add(new Item("Shadow Fragment", 1, "A piece of darkness given form"));
-        tier1Items.Add(new Item("Light Orb", 1, "A glowing sphere of pure light"));
+        tier1Items.Add(new Item("Sun Orb", 1, "A glowing sphere of pure light"));
         tier1Items.Add(new Item("Metallic Ore", 1, "A raw, unrefined chunk of metal"));
         tier1Items.Add(new Item("Plant Leaf", 1, "A leaf from a magical plant with transmutative properties"));
         tier1Items.Add(new Item("Spirit Dust", 1, "Glimmering dust that contains spiritual energy"));
@@ -268,7 +268,7 @@ public class ItemManager : MonoBehaviour
         tier2Items[1].neededItemsItem.Add(tier1Items[2]);
 
         tier2Items[2].neededItems.Add(5);
-        tier2Items[2].neededItems.Add(0);
+        tier2Items[2].neededItems.Add(3);
 
         tier2Items[2].neededItemsItem.Add(tier1Items[5]);
         tier2Items[2].neededItemsItem.Add(tier1Items[0]);

@@ -32,6 +32,10 @@ public class CombatManager : MonoBehaviour
     public Slider attackTimerSlider;
     public Slider enemyHealthSlider;
 
+    public Sprite[] combatIcons;
+    public Image combatImage;
+
+
     bool attacking = false;
 
     public Sprite[] biomeSprites;
@@ -62,6 +66,9 @@ public class CombatManager : MonoBehaviour
         enemyHealthSlider.value = 0;
 
         RefreshTextValues();
+
+        attacking = false;
+        combatImage.sprite = combatIcons[0];
     }
 
     public void RefreshEquipments()
@@ -128,11 +135,14 @@ public class CombatManager : MonoBehaviour
         {
             SetEnemy();
             attacking = true;
+            combatImage.sprite = combatIcons[0];
+
         }
         else
         {
             enemyHealth = 0;
             attacking = false;
+            combatImage.sprite = combatIcons[1];
         }
     }
 
