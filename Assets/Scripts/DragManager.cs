@@ -56,6 +56,7 @@ public class DragManager : MonoBehaviour
 
     public void ReturnObjectToInventory(Item item)
     {
+        AudioManager.instance.PlayPlaceItem();
         ItemManager.instance.AddItemToCount(item);
     }
 

@@ -69,18 +69,20 @@ public class ItemSlot : MonoBehaviour, IDropHandler {
             slotFull = true;
             GetComponent<CircleSlotController>().DropNewItem(dropItem);
             DragManager.instance.DroppedInSlot(true);
+            AudioManager.instance.PlayPlaceItem();
         }
         if (this.gameObject.tag == "EquipmentSlot")
         {
-            if (!CombatManager.instance.CanModifyCombat())
+            if (CombatManager.instance.GetAttacking())
             {
-                InfoTextPopupManager.instance.SpawnInfoTextPopup("Combat changes only when timer is in green color.");
+                InfoTextPopupManager.instance.SpawnInfoTextPopup("Change equipment only when not in combat");
                 return;
             }
             
             slotFull = true;
             GetComponent<EquipmentSlotsController>().DropNewItem(dropItem);
             DragManager.instance.DroppedInSlot(true);
+            AudioManager.instance.PlayPlaceItem();
         }
         //item.transform.SetParent(this.transform, false);
         //item.transform.localPosition = new Vector3(0, 0, 0);

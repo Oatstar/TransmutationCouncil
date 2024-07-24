@@ -8,6 +8,9 @@ public class CombatManager : MonoBehaviour
 {
     public int enemyHealth = 10;
     public int enemyMaxHealth = 10;
+
+    public int playerHealth = 10;
+    public int playerMaxHealth = 10;
     public int attackDamage = 5;
     public List<Item> currentEquipments = new List<Item> { };
     public int currentBiome = 0;
@@ -15,6 +18,8 @@ public class CombatManager : MonoBehaviour
     public int itemDropChanceDefault = 15;
     public int knowledgeDropChanceDefault = 15;
 
+    public float enemyAttackTimer = 0;
+    public float enemyAttackInterval = 7f;
     public float attackTimer = 0;
     public bool combatActive = false;
 
@@ -22,15 +27,26 @@ public class CombatManager : MonoBehaviour
     public int itemDropChance = 15;
     public int knowledgeDropChance = 15;
 
+    public int enemyDamage = 4;
+    public int enemyDefaultDamage = 4;
+
     public EquipmentSlotsController[] equipmentSlotControllers;
 
     public TMP_Text biomeText;
     public TMP_Text attackIntervalText;
     public TMP_Text itemDropChanceText;
     public TMP_Text knowledgeDropChanceText;
+    public TMP_Text enemyDamageText;
+
+    public TMP_Text playerHealthText;
+    public TMP_Text enemyHealthText;
 
     public Slider attackTimerSlider;
+    public Slider enemyAttackTimerSlider;
     public Slider enemyHealthSlider;
+    public Slider playerHealthSlider;
+
+
 
     public Sprite[] combatIcons;
     public Image combatImage;
@@ -56,19 +72,25 @@ public class CombatManager : MonoBehaviour
 
     private void Start()
     {
+        currentBiome = 0;
+        biomeImage.sprite = biomeSprites[currentBiome];
+        biomeText.text = GetBiomeName(currentBiome);
+
         enemyMaxHealth = 10;
         attackInterval = 9;
         attackIntervalDefault = 9;
         attackDamage = 5;
 
-        ChangeBiome(0);
         enemyHealth = 0;
         enemyHealthSlider.value = 0;
 
         RefreshTextValues();
 
         attacking = false;
-        combatImage.sprite = combatIcons[0];
+        combatImage.sprite = combatIcons[1];
+
+        ResetPlayerHealth();
+
     }
 
     public void RefreshEquipments()
@@ -76,6 +98,12 @@ public class CombatManager : MonoBehaviour
         attackInterval = attackIntervalDefault;
         itemDropChance = itemDropChanceDefault;
         knowledgeDropChance = knowledgeDropChanceDefault;
+        enemyDamage = enemyDefaultDamage;
+        if (currentBiome > 0)
+            enemyDamage += 4;
+
+        if (currentBiome == 4)
+            enemyDamage = 20;
 
         currentEquipments.Clear();
         for (int i = 0; i < equipmentSlotControllers.Length; i++)
@@ -102,6 +130,10 @@ public class CombatManager : MonoBehaviour
                 {
                     attackInterval -= currentEquipments[i].buffValue;
                 }
+                else if (currentEquipments[i].buffType == 3) // enemy damage debuff
+                {
+                    enemyDamage -= currentEquipments[i].buffValue;
+                }
             }
         }
 
@@ -111,7 +143,8 @@ public class CombatManager : MonoBehaviour
 
     public void ChangeBiome(int newBiome)
     {
-        if (CombatManager.instance.GetAttacking())
+        AudioManager.instance.PlayBasicClick();
+        if (GetAttacking())
         {
             InfoTextPopupManager.instance.SpawnInfoTextPopup("Can't change biome while fighting");
             return;
@@ -120,13 +153,17 @@ public class CombatManager : MonoBehaviour
         currentBiome = newBiome;
         biomeImage.sprite = biomeSprites[currentBiome];
         biomeText.text = GetBiomeName(currentBiome);
+
+        RefreshEquipments();
     }
 
     void RefreshTextValues()
     {
         attackIntervalText.text = "ATK: "+ attackInterval.ToString() + "s";
+        enemyDamageText.text = "Enemy damage: " + enemyDamage.ToString() + "";
         itemDropChanceText.text = "Extra item chance: "+itemDropChance.ToString() + "%";
         knowledgeDropChanceText.text = "Knowledge chance: " + knowledgeDropChance.ToString() + "%";
+        
     }
 
     public void ToggleAttacking()
@@ -136,26 +173,57 @@ public class CombatManager : MonoBehaviour
             SetEnemy();
             attacking = true;
             combatImage.sprite = combatIcons[0];
-
+            AudioManager.instance.PlayToggleCombat();
         }
         else
         {
             enemyHealth = 0;
+            enemyHealthSlider.value = enemyHealthSlider.maxValue;
             attacking = false;
+
+            attackTimer = 0;
+            attackTimerSlider.value = 0;
+            enemyAttackTimer = 0;
+            enemyAttackTimerSlider.value = 0;
+
             combatImage.sprite = combatIcons[1];
+            
         }
     }
 
     void SetEnemy()
     {
+        ResetPlayerHealth();
+
         enemyHealth = enemyMaxHealth;
+        RefreshEnemyHealth();
+    }
+
+    void RefreshEnemyHealth()
+    {
         enemyHealthSlider.value = Tools.instance.NormalizeToSlider(enemyHealth, enemyMaxHealth);
+        enemyHealthText.text = enemyHealth.ToString()+ "/" + enemyMaxHealth.ToString();
+    }
+
+    void RefreshPlayerHealth()
+    {
+        playerHealthSlider.value = Tools.instance.NormalizeToSlider(playerHealth, playerMaxHealth);
+        playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
+    }
+
+    void ResetPlayerHealth()
+    {
+        playerHealth = playerMaxHealth;
+        RefreshPlayerHealth();
     }
 
     private void Update()
     {
         if (!attacking)
             return;
+
+        enemyAttackTimer += Time.deltaTime;
+        enemyAttackTimerSlider.value = Tools.instance.NormalizeToSlider(enemyAttackTimer, attackInterval);
 
         attackTimer += Time.deltaTime;
         attackTimerSlider.value = Tools.instance.NormalizeToSlider(attackTimer, attackInterval);
@@ -165,23 +233,54 @@ public class CombatManager : MonoBehaviour
             attackTimer = 0;
             DoAttack();
         }
+
+        if (enemyAttackTimer >= enemyAttackInterval)
+        {
+            enemyAttackTimer = 0;
+            EnemyAttacks();
+        }
     }
 
     void DoAttack()
     {
+        AudioManager.instance.PlayPlayerDealsDamage();
         enemyHealth -= attackDamage;
-        enemyHealthSlider.value = Tools.instance.NormalizeToSlider(enemyHealth, enemyMaxHealth);
-        if(enemyHealth <= 0)
+        RefreshEnemyHealth();
+        if (enemyHealth <= 0)
         {
             EnemyDestroyed();
         }
     }
 
+    void EnemyAttacks()
+    {
+        AudioManager.instance.PlayPlayerTakesDamage();
+        playerHealth -= enemyDamage;
+        RefreshPlayerHealth();
+        if (playerHealth <= 0)
+        {
+            PlayerFailed();
+        }
+    }
+
     void EnemyDestroyed()
     {
+        AudioManager.instance.PlayCombatFinished();
         GainLoot();
         FightNewEnemy();
     }
+
+    void PlayerFailed()
+    {
+        InfoTextPopupManager.instance.SpawnInfoTextPopup("You had to retreat from combat");
+        LogTextManager.instance.AddSpecificHintToLog("You ran from the fight");
+
+        AudioManager.instance.PlayTransmuteFailed();
+        AudioManager.instance.PlayPlayerDies();
+
+        ToggleAttacking();
+    }
+
 
     void FightNewEnemy()
     {

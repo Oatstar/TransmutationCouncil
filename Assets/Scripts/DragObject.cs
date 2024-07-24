@@ -32,6 +32,8 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        AudioManager.instance.PlayBasicClick();
+
         if (TransmuteManager.instance.GetTransmutationOnGoing())
         {
             InfoTextPopupManager.instance.SpawnInfoTextPopup("Waiting for transmutation to finish");
@@ -70,6 +72,7 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
+
         if (TransmuteManager.instance.GetTransmutationOnGoing())
             return;
         if (DragManager.instance.currentDragObject == null)

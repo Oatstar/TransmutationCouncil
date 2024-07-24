@@ -137,36 +137,12 @@ public class BigTooltip : MonoBehaviour
                 }
             }
 
-            if (tooltipItem.itemTier == 2)
-            {
-                buffInformation.text = ItemManager.instance.GetBuffText(tooltipItem);
-            }
-            else if (tooltipItem.itemTier == 3)
-            {
-                buffInformation.text = "Equip all 3 of the tier 3 items to escape the Shadow Council!";
-            }
-            //if (currentTier != 0)
-            //{
-            //    neededItem1NameText.text = neededItem1.itemName;
-            //    neededItem2NameText.text = neededItem2.itemName;
-
-            //    neededItem1Image.sprite = neededItem1.itemSprite;
-            //    neededItem2Image.sprite = neededItem2.itemSprite;
-            //}
-            //else
-            //{
-            //    neededItem1NameText.text = "?";
-            //    neededItem2NameText.text = "?";
-            //}
-
-            //neededItem1Image.color = new Color(1, 1, 1, 1);
-            //neededItem2Image.color = new Color(1, 1, 1, 1);
+            
         }
         else
         {
             if (tooltipItem.itemTier == 1)
             {
-                buffInformation.text = ItemManager.instance.GetBuffText(tooltipItem);
                 targetBiomeText.text = "Found in: " + tooltipItem.lootableBiome;
             }
 
@@ -176,8 +152,9 @@ public class BigTooltip : MonoBehaviour
             neededItem2Image.color = new Color(1, 1, 1, 0);
         }
 
+        buffInformation.text = ItemManager.instance.GetBuffText(tooltipItem);
 
-    gameObject.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     private void HideToolTip()

@@ -25,7 +25,7 @@ public class TransmuteManager : MonoBehaviour
         }
 
         transmutationOnGoing = true;
-        FinishTransmute();
+        StartCoroutine(FinishTransmute());
     }
 
     public bool GetTransmutationOnGoing()
@@ -33,8 +33,10 @@ public class TransmuteManager : MonoBehaviour
         return transmutationOnGoing;
     }
 
-    void FinishTransmute()
+
+    IEnumerator FinishTransmute()
     {
+
         Item item1 = circleSlot1.currentItem;
         Item item2 = circleSlot2.currentItem;
 
@@ -45,16 +47,30 @@ public class TransmuteManager : MonoBehaviour
 
             Debug.Log("Both pedestals must have an item");
         }
+        else if(item1.itemTier != item2.itemTier)
+        {
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Both items must be of the same tier");
+        }
         else
         {
+            AudioManager.instance.PlayTransmuteSound();
+            CircleGraphicController.instance.StartGlow();
+
+            yield return new WaitForSeconds(1.0f);
+
+            // Go ahead and finish
             Item newItem = CheckForTransmute(item1, item2);
             if (newItem != null)
             {
+                Debug.Log("Transmute successful");
+                AudioManager.instance.PlayTransmuteSuccess();
                 ItemManager.instance.RefreshUnlock(newItem);
             }
-        }
+            else
+            {
 
-        
+            }
+        }
 
         //InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmutation finished.\n ");
 
@@ -108,15 +124,13 @@ public class TransmuteManager : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            InfoTextPopupManager.instance.SpawnInfoTextPopup("Both items must be of the same tier");
-        }
-
 
         string failText = "Transmute failed. No matching item found.";
         Debug.Log(failText);
         LogTextManager.instance.AddSpecificHintToLog(failText);
+
+        AudioManager.instance.PlayTransmuteFailed();
+
         return null;
     }
 }

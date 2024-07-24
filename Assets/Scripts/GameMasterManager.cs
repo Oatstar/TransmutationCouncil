@@ -7,10 +7,35 @@ public class GameMasterManager : MonoBehaviour
     public float timer = 0;
     float hintInterval = 30f;
 
+    public GameObject menuPanel;
+
     private void Start()
     {
-
+        Time.timeScale = 0;
+        if (!menuPanel.activeSelf)
+            Time.timeScale = 1;
     }
+
+    public void StartGame()
+    {
+        menuPanel.SetActive(false);
+        if(!PlayerPrefs.HasKey("TutorialSeen"))
+        {
+            PlayerPrefs.SetInt("TutorialSeen", 1);
+            TutorialManager.instance.StartTutorial();
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
+    public void OpenMenu()
+    {
+        menuPanel.SetActive(true);
+        Time.timeScale = 0;
+    }
+
 
     private void Update()
     {

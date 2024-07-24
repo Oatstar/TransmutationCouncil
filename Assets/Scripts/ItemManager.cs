@@ -194,7 +194,7 @@ public class ItemManager : MonoBehaviour
 
     void CreateItemBuffs()
     {
-        tier1Items[0].SetBuffValues(0, 10, 2);
+        tier1Items[0].SetBuffValues(0, 10, 2); //type, value, targetbiome
         tier1Items[1].SetBuffValues(0, 10, 3);
         tier1Items[2].SetBuffValues(0, 10, 0);
         tier1Items[3].SetBuffValues(0, 10, 1);
@@ -202,17 +202,17 @@ public class ItemManager : MonoBehaviour
         tier1Items[5].SetBuffValues(0, 15, 2);
         tier1Items[6].SetBuffValues(1, 10, 0);
         tier1Items[7].SetBuffValues(2, 2, 0);
-        tier1Items[8].SetBuffValues(2, 1, 1);
+        tier1Items[8].SetBuffValues(3, 4, 1);
         tier1Items[9].SetBuffValues(0, 15, 0);
         tier1Items[10].SetBuffValues(1, 10, 3);
         tier1Items[11].SetBuffValues(2, 2, 3);
         tier1Items[12].SetBuffValues(2, 2, 1);
         tier1Items[13].SetBuffValues(1, 10, 1);
         tier1Items[14].SetBuffValues(0, 15, 1);
-        tier1Items[15].SetBuffValues(2, 1, 2);
+        tier1Items[15].SetBuffValues(3, 4, 3);
         tier1Items[16].SetBuffValues(2, 1, 3);
         tier1Items[17].SetBuffValues(2, 2, 2);
-        tier1Items[18].SetBuffValues(2, 1, 0);
+        tier1Items[18].SetBuffValues(3, 4, 2);
         tier1Items[19].SetBuffValues(1, 10, 2);
 
         tier2Items[0].SetBuffValues(0, 20, 0);
@@ -226,6 +226,9 @@ public class ItemManager : MonoBehaviour
         tier2Items[8].SetBuffValues(0, 25, 0);
         tier2Items[9].SetBuffValues(0, 25, 1);
 
+        tier3Items[0].SetBuffValues(3, 6, 4);
+        tier3Items[1].SetBuffValues(3, 6, 4);
+        tier3Items[2].SetBuffValues(3, 6, 4);
 
     }
 
@@ -723,6 +726,10 @@ public class ItemManager : MonoBehaviour
         else if (item.buffType == 2)
         {
             text = "-" + item.buffValue + " attack interval in " + biomeName;
+        }
+        else if (item.buffType == 3)
+        {
+            text = "-" + item.buffValue + " enemy attack damage " + biomeName;
         }
         return text;
     }

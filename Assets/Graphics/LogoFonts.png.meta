@@ -1,0 +1,266 @@
+fileFormatVersion: 2
+guid: 9807f1c7436245049a5882ccbb634c1b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6413394212248828022
+    second: LogoFonts_0
+  - first:
+      213: -3793686290717631492
+    second: LogoFonts_1
+  - first:
+      213: 8270394611815501563
+    second: LogoFonts_2
+  - first:
+      213: 1924349500823288496
+    second: LogoFonts_3
+  - first:
+      213: -2279667442697246327
+    second: LogoFonts_4
+  - first:
+      213: -7857965836279140398
+    second: LogoFonts_5
+  - first:
+      213: 4218601452167755579
+    second: LogoFonts_6
+  - first:
+      213: 5702759325175970582
+    second: LogoFonts_7
+  - first:
+      213: -6339831470004871110
+    second: LogoFonts_8
+  - first:
+      213: -7030490818767036633
+    second: LogoFonts_9
+  - first:
+      213: 2829203229143972006
+    second: LogoFonts_10
+  - first:
+      213: 1906147977497153363
+    second: LogoFonts_11
+  - first:
+      213: 5935668788319769962
+    second: LogoFonts_12
+  - first:
+      213: -8930832589588473838
+    second: LogoFonts_13
+  - first:
+      213: -8597969393967188847
+    second: LogoFonts_14
+  - first:
+      213: -2315963133328195663
+    second: LogoFonts_15
+  - first:
+      213: 2392260208715896230
+    second: LogoFonts_16
+  - first:
+      213: -5973198235157099827
+    second: LogoFonts_17
+  - first:
+      213: -7930764412445309440
+    second: LogoFonts_18
+  - first:
+      213: 5260071748425980646
+    second: LogoFonts_19
+  - first:
+      213: -8064764114674771260
+    second: LogoFonts_20
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 18
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LogoFonts_0
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 254
+        width: 367
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a87cc5e81fb0ff6a0800000000000000
+      internalID: -6413394212248828022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogoFonts_1
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 129
+        width: 553
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfb918c1b6e1a5bc0800000000000000
+      internalID: -3793686290717631492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: c4c74b7d13f4b3f4babc908e9d917e27
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      LogoFonts_0: -6413394212248828022
+      LogoFonts_1: -3793686290717631492
+      LogoFonts_10: 2829203229143972006
+      LogoFonts_11: 1906147977497153363
+      LogoFonts_12: 5935668788319769962
+      LogoFonts_13: -8930832589588473838
+      LogoFonts_14: -8597969393967188847
+      LogoFonts_15: -2315963133328195663
+      LogoFonts_16: 2392260208715896230
+      LogoFonts_17: -5973198235157099827
+      LogoFonts_18: -7930764412445309440
+      LogoFonts_19: 5260071748425980646
+      LogoFonts_2: 8270394611815501563
+      LogoFonts_20: -8064764114674771260
+      LogoFonts_3: 1924349500823288496
+      LogoFonts_4: -2279667442697246327
+      LogoFonts_5: -7857965836279140398
+      LogoFonts_6: 4218601452167755579
+      LogoFonts_7: 5702759325175970582
+      LogoFonts_8: -6339831470004871110
+      LogoFonts_9: -7030490818767036633
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
