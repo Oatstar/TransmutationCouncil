@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource playerDealsDamage;
     public AudioSource playerTakesDamage;
     public AudioSource playerDies;
+    public AudioSource gameWonSound;
 
 
     private bool isMuted = false;
@@ -28,6 +29,12 @@ public class AudioManager : MonoBehaviour
     {
         // Initialize all audio sources to unmuted if needed
         UnmuteAllSounds();
+    }
+
+
+    public void PlayGameWonSound()
+    {
+        if (!isMuted) gameWonSound.Play();
     }
 
     public void PlayPlayerDealsDamage()

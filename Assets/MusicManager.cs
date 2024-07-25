@@ -6,6 +6,12 @@ public class MusicManager : MonoBehaviour
     public AudioSource[] musicTracks;
     private int currentTrackIndex = -1;
     private bool isPlaying = false;
+    public static MusicManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -35,6 +41,20 @@ public class MusicManager : MonoBehaviour
 
             currentTrackIndex = (currentTrackIndex + 1) % musicTracks.Length;
         }
+    }
+
+    public void PlayTrack(int id)
+    {
+        if (id < 0 || id >= musicTracks.Length)
+        {
+            Debug.LogError("Track ID is out of range.");
+            return;
+        }
+
+        StopMusic(); // Stop any currently playing music
+        currentTrackIndex = id;
+        musicTracks[currentTrackIndex].Play();
+        isPlaying = true;
     }
 
     public void StopMusic()

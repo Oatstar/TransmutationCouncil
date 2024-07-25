@@ -13,6 +13,7 @@ public class CircleGraphicController : MonoBehaviour
     public Image ballGlowImage1;
     public Image ballGlowImage2;
 
+
     public static CircleGraphicController instance;
 
     private void Awake()
@@ -116,6 +117,7 @@ public class CircleGraphicController : MonoBehaviour
             {
                 extraGlowColor.a = Mathf.Lerp(1f, 0f, t / extraGlowFadeOutTime);
                 circleExtraGlow.color = extraGlowColor;
+
             }
 
             yield return null;

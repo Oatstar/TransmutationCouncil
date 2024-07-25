@@ -46,7 +46,15 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
         }
         else if (this.transform.parent.tag == "EquipmentSlot")
         {
-            DragManager.instance.SetDragData(transform.parent.GetComponent<EquipmentSlotsController>().currentItem, this.transform.parent.gameObject, this);
+            if (CombatManager.instance.GetAttacking())
+            {
+                InfoTextPopupManager.instance.SpawnInfoTextPopup("Stop combat to remove items");
+                return;
+            }
+            else
+            {
+                DragManager.instance.SetDragData(transform.parent.GetComponent<EquipmentSlotsController>().currentItem, this.transform.parent.gameObject, this);
+            }
         }
         else //if InventorySlot
         {

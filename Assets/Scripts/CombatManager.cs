@@ -308,6 +308,7 @@ public class CombatManager : MonoBehaviour
 
         List<Item> possibleItems = ItemManager.instance.GetItemsOfBiome(currentBiome);
 
+        bool extraLoot = false;
         List<Item> itemLoot = new List<Item> { };
         for (int i = 0; i < 3; i++)
         {
@@ -316,17 +317,34 @@ public class CombatManager : MonoBehaviour
 
         int itemDropRandom = UnityEngine.Random.Range(0, 100);
         if(itemDropRandom < itemDropChance)
+        {
             itemLoot.Add(possibleItems[UnityEngine.Random.Range(0, possibleItems.Count)]);
+            extraLoot = true;
+        }
 
         int knowledgeDropRandom = UnityEngine.Random.Range(0, 100);
         if (knowledgeDropRandom < knowledgeDropChance)
             ItemManager.instance.GainRandomKnowledgeByBiome(currentBiome);
 
+        string lootText = "LOOT: ";
+        int maxCount = itemLoot.Count;
+        if (extraLoot)
+            maxCount -= 1;
+
         for (int i = 0; i < itemLoot.Count; i++)
-        {
-            LogTextManager.instance.AddSpecificHintToLog("LOOT: "+itemLoot[i].itemName);
             ItemManager.instance.AddItemToCount(itemLoot[0]);
+
+        for (int i = 0; i < maxCount; i++)
+        {
+            lootText = lootText + itemLoot[i].itemName;
+            if (i < maxCount - 1)
+                lootText += ", ";
         }
+
+        LogTextManager.instance.AddSpecificHintToLog(lootText);
+
+        if(extraLoot)
+            LogTextManager.instance.AddSpecificHintToLog("EXTRA LOOT: "+itemLoot[itemLoot.Count-1].itemName);
     }
 
     public bool CanModifyCombat()

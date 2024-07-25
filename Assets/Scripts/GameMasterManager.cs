@@ -84,6 +84,8 @@ public class GameMasterManager : MonoBehaviour
 
     public void GameFinished()
     {
+        MusicManager.instance.PlayTrack(0);
+        AudioManager.instance.PlayGameWonSound();
         Time.timeScale = 0;
         gameFinished = true;
         gameWonPanel.SetActive(true);

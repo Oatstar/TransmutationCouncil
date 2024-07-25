@@ -69,20 +69,22 @@ public class TransmuteManager : MonoBehaviour
             Item newItem = CheckForTransmute(item1, item2);
             if (newItem != null)
             {
-                Debug.Log("Transmute successful");
+                Debug.Log("Transmutation successful");
 
                 ItemManager.instance.AddItemToCount(newItem);
 
                 string succesText = $"{item1.itemName} and {item2.itemName} create {newItem.itemName}.";
                 LogTextManager.instance.AddSpecificHintToLog(succesText);
-                InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmute successful!");
+                InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmutation successful!");
 
                 AudioManager.instance.PlayTransmuteSuccess();
                 ItemManager.instance.RefreshUnlock(newItem);
+
+                NewItemFlasherController.instance.StartFade(newItem);
             }
             else
             {
-                string failText = "Transmute failed. No matching item found.";
+                string failText = "Transmutation failed";
                 Debug.Log(failText);
                 LogTextManager.instance.AddSpecificHintToLog(failText);
 
