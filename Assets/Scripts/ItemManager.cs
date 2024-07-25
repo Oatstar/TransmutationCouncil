@@ -274,7 +274,7 @@ public class ItemManager : MonoBehaviour
         tier2Items[2].neededItems.Add(3);
 
         tier2Items[2].neededItemsItem.Add(tier1Items[5]);
-        tier2Items[2].neededItemsItem.Add(tier1Items[0]);
+        tier2Items[2].neededItemsItem.Add(tier1Items[3]);
 
         tier2Items[3].neededItems.Add(6);
         tier2Items[3].neededItems.Add(8);
@@ -646,8 +646,8 @@ public class ItemManager : MonoBehaviour
 
         //For testing purposes
         
-        if (Input.GetKeyDown(KeyCode.A))
-            GainRandomKnowledgeByBiome(0);
+        //if (Input.GetKeyDown(KeyCode.A))
+        //    GainRandomKnowledgeByBiome(0);
     }
 
     public Item GainRandomKnowledgeByBiome(int biomeId)

@@ -53,7 +53,9 @@ public class DragObject : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
             }
             else
             {
-                DragManager.instance.SetDragData(transform.parent.GetComponent<EquipmentSlotsController>().currentItem, this.transform.parent.gameObject, this);
+                Item currentItem = transform.parent.GetComponent<EquipmentSlotsController>().currentItem;
+                if (currentItem != null && currentItem.itemId != -1)
+                    DragManager.instance.SetDragData(transform.parent.GetComponent<EquipmentSlotsController>().currentItem, this.transform.parent.gameObject, this);
             }
         }
         else //if InventorySlot

@@ -103,6 +103,12 @@ public class TransmuteManager : MonoBehaviour
     Item CheckForTransmute(Item item1, Item item2)
     {
 
+        if(item1 == item2)
+        {
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Two of the same item turns to dust always!");
+            return null;
+        }
+
         if(item1.itemTier == 1 && item2.itemTier == 1)
         {
             Debug.Log("Both items are tier 2: "+item1.itemName + " ... "+item2.itemName);

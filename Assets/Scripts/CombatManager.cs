@@ -14,18 +14,20 @@ public class CombatManager : MonoBehaviour
     public int attackDamage = 5;
     public List<Item> currentEquipments = new List<Item> { };
     public int currentBiome = 0;
-    public int attackIntervalDefault = 10;
     public int itemDropChanceDefault = 15;
-    public int knowledgeDropChanceDefault = 15;
+    public int knowledgeDropChanceDefault = 25;
 
     public float enemyAttackTimer = 0;
-    public float enemyAttackInterval = 7f;
+
+    public float enemyAttackInterval = 7;
+    public int attackInterval = 8;
+    int attackIntervalDefault = 8;
+
     public float attackTimer = 0;
     public bool combatActive = false;
 
-    public int attackInterval = 8;
     public int itemDropChance = 15;
-    public int knowledgeDropChance = 15;
+    public int knowledgeDropChance = 25;
 
     public int enemyDamage = 4;
     public int enemyDefaultDamage = 4;
@@ -77,8 +79,7 @@ public class CombatManager : MonoBehaviour
         biomeText.text = GetBiomeName(currentBiome);
 
         enemyMaxHealth = 10;
-        attackInterval = 9;
-        attackIntervalDefault = 9;
+        attackInterval = attackIntervalDefault;
         attackDamage = 5;
 
         enemyHealth = 0;
@@ -136,6 +137,9 @@ public class CombatManager : MonoBehaviour
                 }
             }
         }
+
+        if (attackInterval < 1)
+            attackInterval = 1;
 
         RefreshTextValues();
 
@@ -261,6 +265,8 @@ public class CombatManager : MonoBehaviour
         RefreshPlayerHealth();
         if (playerHealth <= 0)
         {
+            playerHealth = 0;
+            RefreshPlayerHealth();
             PlayerFailed();
         }
     }
@@ -332,7 +338,7 @@ public class CombatManager : MonoBehaviour
             maxCount -= 1;
 
         for (int i = 0; i < itemLoot.Count; i++)
-            ItemManager.instance.AddItemToCount(itemLoot[0]);
+            ItemManager.instance.AddItemToCount(itemLoot[i]);
 
         for (int i = 0; i < maxCount; i++)
         {
