@@ -191,6 +191,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: CombatToggleButton_3
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 170
+        width: 22
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3166473dbcc1621488121da85a0fc292
+      internalID: 526195089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -205,6 +226,7 @@ TextureImporter:
       CombatToggleButton_0: 4101943721823990481
       CombatToggleButton_1: -1313733340865666695
       CombatToggleButton_2: 454880062
+      CombatToggleButton_3: 526195089
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

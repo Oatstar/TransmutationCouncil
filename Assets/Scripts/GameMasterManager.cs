@@ -1,16 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameMasterManager : MonoBehaviour
 {
     public float timer = 0;
     float hintInterval = 30f;
 
+    public bool gameFinished = false;
+
+    public TMP_Text startButtonText;
+
     public GameObject menuPanel;
+    public GameObject gameWonPanel;
+
+    public static GameMasterManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
+        startButtonText.text = "START";
+
         Time.timeScale = 0;
         if (!menuPanel.activeSelf)
             Time.timeScale = 1;
@@ -32,10 +48,18 @@ public class GameMasterManager : MonoBehaviour
 
     public void OpenMenu()
     {
+        startButtonText.text = "CONTINUE";
+
         menuPanel.SetActive(true);
         Time.timeScale = 0;
     }
 
+
+    public void RestartGame()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
 
     private void Update()
     {
@@ -57,4 +81,17 @@ public class GameMasterManager : MonoBehaviour
             LogTextManager.instance.TriggerKnowledgeHint(2);
     }
 
+
+    public void GameFinished()
+    {
+        Time.timeScale = 0;
+        gameFinished = true;
+        gameWonPanel.SetActive(true);
+    }
+
+    public void CloseGameWonPanel()
+    {
+        gameWonPanel.SetActive(false);
+        OpenMenu();
+    }
 }

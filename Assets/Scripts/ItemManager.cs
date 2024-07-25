@@ -360,7 +360,7 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < tier1ItemCounts.Length; i++)
         {
             int randomChance = UnityEngine.Random.Range(0, 100);
-            if(randomChance < 25)
+            if(randomChance < 35)
             {
                 tier1ItemCounts[i] = 1;
                 tier1Unlocks[i] = true;

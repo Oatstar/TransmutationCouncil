@@ -197,6 +197,8 @@ public class CombatManager : MonoBehaviour
 
         enemyHealth = enemyMaxHealth;
         RefreshEnemyHealth();
+
+        enemyAttackTimer = 0;
     }
 
     void RefreshEnemyHealth()
@@ -223,7 +225,7 @@ public class CombatManager : MonoBehaviour
             return;
 
         enemyAttackTimer += Time.deltaTime;
-        enemyAttackTimerSlider.value = Tools.instance.NormalizeToSlider(enemyAttackTimer, attackInterval);
+        enemyAttackTimerSlider.value = Tools.instance.NormalizeToSlider(enemyAttackTimer, enemyAttackInterval);
 
         attackTimer += Time.deltaTime;
         attackTimerSlider.value = Tools.instance.NormalizeToSlider(attackTimer, attackInterval);
@@ -266,8 +268,20 @@ public class CombatManager : MonoBehaviour
     void EnemyDestroyed()
     {
         AudioManager.instance.PlayCombatFinished();
-        GainLoot();
-        FightNewEnemy();
+
+        if(currentBiome == 4 && !GameMasterManager.instance.gameFinished)
+        {
+            GameMasterManager.instance.GameFinished();
+        }
+        else if(currentBiome < 4)
+        {
+            GainLoot();
+            FightNewEnemy();
+        }
+        else
+        {
+            FightNewEnemy();
+        }
     }
 
     void PlayerFailed()
@@ -289,6 +303,9 @@ public class CombatManager : MonoBehaviour
 
     void GainLoot()
     {
+        if (currentBiome == 4)
+            return;
+
         List<Item> possibleItems = ItemManager.instance.GetItemsOfBiome(currentBiome);
 
         List<Item> itemLoot = new List<Item> { };
@@ -331,6 +348,8 @@ public class CombatManager : MonoBehaviour
             return "Enchanted Forest";
         else if (id == 3)
             return "Frozen Tundra";
+        else if (id == 4)
+            return "Shadow Realm";
         else
             return "";
     }

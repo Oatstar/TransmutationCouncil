@@ -15,6 +15,15 @@ public class BigTooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 Item item = GetComponent<ItemController>().GetItem();
                 BigTooltip.ShowItemTooltip_Static(item);
             }
+            else if(this.tag == "EquipmentSlot")
+            {
+
+                Item item = GetComponent<EquipmentSlotsController>().currentItem;
+                if(item != null && item.itemId != -1)
+                {
+                    BigTooltip.ShowItemTooltip_Static(item);
+                }
+            }
             else
             {
                 BigTooltip.HideTooltip_Static();

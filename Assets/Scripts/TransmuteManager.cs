@@ -18,6 +18,8 @@ public class TransmuteManager : MonoBehaviour
     
     public void StartTransmute()
     {
+        AudioManager.instance.PlayBasicClick();
+
         if (GetTransmutationOnGoing())
         {
             InfoTextPopupManager.instance.SpawnInfoTextPopup("Wait for transmutation to finish");
@@ -40,8 +42,13 @@ public class TransmuteManager : MonoBehaviour
         Item item1 = circleSlot1.currentItem;
         Item item2 = circleSlot2.currentItem;
 
-        Debug.Log("itemm1: " + item1.itemId);
-        if (item1.itemId == -1 || item2.itemId == -1)
+        if(item1 == null || item2 == null)
+        {
+            InfoTextPopupManager.instance.SpawnInfoTextPopup("Both pedestals must have an item");
+
+            Debug.Log("Both pedestals must have an item");
+        }
+        else if (item1.itemId == -1 || item2.itemId == -1)
         {
             InfoTextPopupManager.instance.SpawnInfoTextPopup("Both pedestals must have an item");
 
@@ -63,13 +70,27 @@ public class TransmuteManager : MonoBehaviour
             if (newItem != null)
             {
                 Debug.Log("Transmute successful");
+
+                ItemManager.instance.AddItemToCount(newItem);
+
+                string succesText = $"{item1.itemName} and {item2.itemName} create {newItem.itemName}.";
+                LogTextManager.instance.AddSpecificHintToLog(succesText);
+                InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmute successful!");
+
                 AudioManager.instance.PlayTransmuteSuccess();
                 ItemManager.instance.RefreshUnlock(newItem);
             }
             else
             {
+                string failText = "Transmute failed. No matching item found.";
+                Debug.Log(failText);
+                LogTextManager.instance.AddSpecificHintToLog(failText);
 
+                AudioManager.instance.PlayTransmuteFailed();
             }
+
+            circleSlot1.ExpendItem();
+            circleSlot2.ExpendItem();
         }
 
         //InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmutation finished.\n ");
@@ -90,14 +111,11 @@ public class TransmuteManager : MonoBehaviour
                 if (tier2Item.neededItems.Contains(item1.itemId) && tier2Item.neededItems.Contains(item2.itemId))
                 {
                     string successText = $"{item1.itemName} and {item2.itemName} create {tier2Item.itemName}.";
-                    InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmute successful!");
-                    Debug.Log(successText);
-                    LogTextManager.instance.AddSpecificHintToLog(successText);
+                    //InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmute successful!");
+                    //Debug.Log(successText);
+                    //LogTextManager.instance.AddSpecificHintToLog(successText);
 
-                    ItemManager.instance.AddItemToCount(tier2Item);
-
-                    circleSlot1.ExpendItem();
-                    circleSlot2.ExpendItem();
+                    //ItemManager.instance.AddItemToCount(tier2Item);
 
                     return tier2Item;
                 }
@@ -110,27 +128,19 @@ public class TransmuteManager : MonoBehaviour
                 if (tier3Item.neededItems.Contains(item1.itemId) && tier3Item.neededItems.Contains(item2.itemId))
                 {
                     string succesText = $"{item1.itemName} and {item2.itemName} create {tier3Item.itemName}.";
-                    InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmute successful!");
-                    Debug.Log(succesText);
+                    //InfoTextPopupManager.instance.SpawnInfoTextPopup("Transmute successful!");
+                    //Debug.Log(succesText);
 
-                    LogTextManager.instance.AddSpecificHintToLog(succesText);
+                    //LogTextManager.instance.AddSpecificHintToLog(succesText);
 
-                    ItemManager.instance.AddItemToCount(tier3Item);
-
-                    circleSlot1.ExpendItem();
-                    circleSlot2.ExpendItem();
+                    //ItemManager.instance.AddItemToCount(tier3Item);
 
                     return tier3Item;
                 }
             }
         }
 
-        string failText = "Transmute failed. No matching item found.";
-        Debug.Log(failText);
-        LogTextManager.instance.AddSpecificHintToLog(failText);
-
-        AudioManager.instance.PlayTransmuteFailed();
-
+        
         return null;
     }
 }

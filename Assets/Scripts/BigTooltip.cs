@@ -20,6 +20,11 @@ public class BigTooltip : MonoBehaviour
     public TMP_Text targetBiomeText;
     public TMP_Text buffInformation;
 
+    public Image lootableBiomeImage;
+    public Image targetBuffBiomeImage;
+
+    public Sprite[] biomeIcons;
+
     public Canvas canvas;
     //[SerializeField] private Camera uiCamera;
 
@@ -101,6 +106,8 @@ public class BigTooltip : MonoBehaviour
         itemFlavourText.text = tooltipItem.infoText;
         targetBiomeText.text = "";
 
+        lootableBiomeImage.color = new Color(1, 1, 1, 0);
+
         if (tooltipItem.itemTier == 2 || tooltipItem.itemTier == 3)
         {
             Item neededItem1 = null;
@@ -143,7 +150,9 @@ public class BigTooltip : MonoBehaviour
         {
             if (tooltipItem.itemTier == 1)
             {
-                targetBiomeText.text = "Found in: " + tooltipItem.lootableBiome;
+                targetBiomeText.text = "Found in: " + CombatManager.instance.GetBiomeName(tooltipItem.lootableBiome);
+                lootableBiomeImage.sprite = biomeIcons[tooltipItem.lootableBiome];
+                lootableBiomeImage.color = new Color(1, 1, 1, 1);
             }
 
             neededItem1NameText.text = "";
@@ -153,6 +162,7 @@ public class BigTooltip : MonoBehaviour
         }
 
         buffInformation.text = ItemManager.instance.GetBuffText(tooltipItem);
+        targetBuffBiomeImage.sprite = biomeIcons[tooltipItem.buffBiome];
 
         gameObject.SetActive(true);
     }
